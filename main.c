@@ -42,10 +42,10 @@ struct queue{
     int count;
     struct event *head;
     struct event *tail;
-};
+}queue;
 
 //global variables
-int eventid = 0; //incremented when event is created
+int eventid = 1; //incremented when event is created
 int clock = 0; //is this even needed?
 bool cpuOccupied = false;
 bool diskOccupied = false;
@@ -70,7 +70,6 @@ int getTime();
 
 int main(int argc, char* argv[]){
     struct queue eventQueue;
-
     initQueue(&eventQueue);
     printf("Main: Size of queue: %lu\n", sizeof(event));
     initConfigFile();
@@ -81,51 +80,64 @@ int main(int argc, char* argv[]){
     // while(eventQueue.count < 0){
 
     // }
-
     //how can I make this not hardcoded?
     // struct queue *eventQueue;
-    struct event newEvent;
     // struct event newEvent2;
+    // initEvent(&newEvent2, &eventQueue);
+    // push(&newEvent2, &eventQueue);
     // struct event newEvent3;
-    // struct event newEvent4;
-    initEvent(&newEvent, &eventQueue);
-    // initEvent(&newEvent2, &queue);
-    // initEvent(&newEvent3, &queue);
-    // initEvent(&newEvent4, &queue);
-    push(&newEvent, &eventQueue);
-    // push(&newEvent2, &queue);
-    // push(&newEvent3, &queue);
-    // push(&newEvent4, &queue);
-    // printf("Main: tail of queue: %d\n", queue.tail->ProcessID);
-    // printf("Main: Popped Event: %d\n", queue.head->ProcessID);
-    // struct event poppedEvent = pop(&queue);
-    // printf("Main: Popped Event(test): %d\n", poppedEvent.ProcessID);
-    // struct event poppedEvent2 = pop(&queue);
-    // printf("Main: Popped Event(test): %d\n", poppedEvent2.ProcessID);
-    // printf("Main: Head Event(test): %d\n", queue.head->ProcessID);
+    // initEvent(&newEvent3, &eventQueue);
+    // push(&newEvent3, &eventQueue);
+    // int count = 0;
+    // while(count < 100){
+    //     struct event newEvent2;
+    //     initEvent(&newEvent2, &eventQueue);
+    //     push(&newEvent2, &eventQueue);
+    //     // printf("Main: Tail of queue: %d\n", eventQueue.tail->ProcessID);
+    //     // printf("Main: Head of queue: %d\n", eventQueue.head->Time);
+    //     // if(count % 10 == 0){
+    //     //     struct event poppedEvent = pop(&eventQueue); //this is making things act weird.
+    //     //     printf("Main: Popped Event: %d\n", poppedEvent.ProcessID);
+    //     //     printf("Main: Head(test): %d\n", eventQueue.head->ProcessID);
+    //     // }
+    //     count++;
+    // }
     int count = 0;
-    while(count < 100){
-        struct event newEvent2;
-        initEvent(&newEvent2, &eventQueue);
-        push(&newEvent2, &eventQueue);
-        // printf("Main: Tail of queue: %d\n", eventQueue.tail->Time);
-        // printf("Main: Head of queue: %d\n", eventQueue.head->Time);
+    while(count <= 100){
+        struct event *newEvent;
+        newEvent = malloc(sizeof(struct event));
+        initEvent(newEvent, &eventQueue);
+        push(newEvent, &eventQueue); 
+        // printf("Main: Tail of queue: %d\n", eventQueue.tail->ProcessID);
+        // printf("Main: Head of queue: %d\n", eventQueue.head->ProcessID);
         if(count % 10 == 0){
-            // struct event poppedEvent = pop(&eventQueue);
-            // printf("Main: Popped Event: %d\n", poppedEvent.Time);
+            // struct event poppedEvent = pop(&eventQueue); //this is making things act weird.
+            // printf("Main: Popped Event: %d\n", poppedEvent.ProcessID);
+        }
+        count ++;
+    }
+    // printf("Main: Head(test): %d\n", eventQueue.head->ProcessID);
+    // printf("Main: Head next(test): %d\n", eventQueue.head->next->ProcessID);
+
+    // printf("Main: Head next prev(test): %d\n", eventQueue.head->next->prev->ProcessID);
+    // printf("Main: Head next next(test): %d\n", eventQueue.head->next->next->ProcessID);
+
+    // printf("Main: Tail(test): %d\n", eventQueue.tail->ProcessID);
+    // printf("Main: Tail prev(test): %d\n", eventQueue.tail->prev->ProcessID);
+    // printf("Main: Tail prev next(test): %d\n", eventQueue.tail->prev->next->ProcessID);
+    
+    
+    sortEventQueue(&eventQueue);
+    struct event *curr = eventQueue.head;
+    while(curr->next != NULL){
+        printf("Sort check: Current time: %d | ID: %d\n", curr->Time, curr->ProcessID);
+        if(curr->next != NULL){
+            curr = curr->next;
         }
         count++;
     }
-    // sortEventQueue(&eventQueue);
-    struct event *curr = eventQueue.head;
-    count = 0;
-    while(count < 10){
-        printf("Current time: %d\n", curr->next->ProcessID);
-        *curr = *curr->next;
-        count++;
-    }
     printf("Main: Size of EventQueue memory: %lu\n", sizeof(event)*eventQueue.count);
-    //I don't malloc any memory so do I have to free it?
+    // //I don't malloc any memory so do I have to free it?
 }
 
 //parses config file and sets variables
@@ -249,7 +261,7 @@ void initEvent(struct event *newEvent, struct queue *que){
     // printf("initEvent: Process arrival: %s\n", newEvent->Process);
 }
 
-//Done needs testing
+//Done and tested
 void push(struct event *newEvent, struct queue *que){
     que->count++;
     if(isEmpty(que) == 1){
@@ -258,10 +270,8 @@ void push(struct event *newEvent, struct queue *que){
         que->head = newEvent;
         que->tail = newEvent;
     }else{
-        newEvent->prev = que->tail;
         newEvent->next = NULL;
-        que->tail->next = newEvent;
-        que->tail = newEvent;
+        newEvent->prev = que->tail;
         que->tail->next = newEvent;
         que->tail = newEvent;
         newEvent = NULL;
@@ -285,27 +295,30 @@ struct event pop(struct queue *que){
 }
 
 //start of priority queue methods
-//TO_DO
+//Done and partially tested
 void sortEventQueue(struct queue *que){
     //get first node
     //compare to second node
     //if second < first then swap
     int swapped, i;
     struct event *first = que->head;
-    struct event *last= que->tail;
+    struct event *second = NULL;
 
-    int sorted = 0;
-    struct event *next;
-    while(sorted < que->count){
-        next = first->next;
-        while(next != NULL){
-            if(first->Time > next->Time){
-                swap(first, next);
-                first = next;
-            }
-        }
-        sorted++;   
+    if(first == NULL){
+        return;
     }
+    do{
+        swapped = 0;
+        first = que->head;
+        while(first->next != second){
+            if(first->Time > first->next->Time){
+                swap(first, first->next);
+                swapped = 1;
+            }
+            first = first->next;
+        }
+        second = first;
+    }while(swapped);
 }
 
 void swap(struct event *larger, struct event *smaller){
