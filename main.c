@@ -27,13 +27,13 @@ struct Config{
 //struct for the event type
 
 struct event{
+
     int ProcessID;
-    enum types{ SIM_START, PROCESS_ARRIVAL, PROCESS_ARRIVE_CPU, PROCESS_FINISH_CPU,
-                PROCESS_EXIT_SYSTEM, PROCESS_ARRIVE_DISK1, PROCESS_ARRIVE_DISK2,
-                PROCESS_FINISH_DISK1, PROCESS_FINISH_DISK2, PROCESS_ARRIVE_NETWORK,
-                PROCESS_FINISH_NETWORK, PROCESS_FINSIH, SIM_END}eventType;
+    enum types{ SIM_START, ARRIVAL, ARRIVE_CPU, FINISH_CPU,
+                EXIT_SYSTEM, ARRIVE_DISK1, ARRIVE_DISK2,
+                FINISH_DISK1, FINISH_DISK2, ARRIVE_NETWORK,
+                FINISH_NETWORK, FINISH, SIM_END}eventType;
     int Time;   //what is this??
-    char *Process; //what is a process?
     struct event *prev;
     struct event *next;
 }event;
@@ -49,6 +49,9 @@ int eventid = 1; //incremented when event is created
 int clock = 0; //is this even needed?
 bool cpuOccupied = false;
 bool diskOccupied = false;
+char *types[13] = {"SIM_START","ARRIVAL", "ARRIVE_CPU", "FINISH_CPU","EXIT_SYSTEM", 
+                    "ARRIVE_DISK1", "ARRIVE_DISK2","FINISH_DISK1", "FINISH_DISK2",
+                    "ARRIVE_NETWORK", "FINISH_NETWORK", "FINISH", "SIM_END"};
 // is time real?
 
 //methods
@@ -71,51 +74,84 @@ int getTime();
 int main(int argc, char* argv[]){
     struct queue eventQueue;
     initQueue(&eventQueue);
-    printf("Main: Size of queue: %lu\n", sizeof(event));
+    // printf("Main: Size of queue: %lu\n", sizeof(event));
     initConfigFile();
     srand(config.SEED); //random seed
-    printf("Main: arrive max: %d\n", config.ARRIVE_MAX);
-    int random = randomNumberGenerator(config.ARRIVE_MAX, config.ARRIVE_MIN); //test random number generator
-    printf("Main: Random: %d\n", random);
-    // while(eventQueue.count < 0){
+    struct event *startEvent;
+    startEvent = malloc(sizeof(struct event));
+    initEvent(startEvent, &eventQueue);
+    startEvent->Time = config.INIT_TIME;
+    startEvent->eventType = SIM_START;
+    push(startEvent, &eventQueue);
 
-    // }
-    //how can I make this not hardcoded?
-    // struct queue *eventQueue;
-    // struct event newEvent2;
-    // initEvent(&newEvent2, &eventQueue);
-    // push(&newEvent2, &eventQueue);
-    // struct event newEvent3;
-    // initEvent(&newEvent3, &eventQueue);
-    // push(&newEvent3, &eventQueue);
-    // int count = 0;
-    // while(count < 100){
-    //     struct event newEvent2;
-    //     initEvent(&newEvent2, &eventQueue);
-    //     push(&newEvent2, &eventQueue);
-    //     // printf("Main: Tail of queue: %d\n", eventQueue.tail->ProcessID);
-    //     // printf("Main: Head of queue: %d\n", eventQueue.head->Time);
-    //     // if(count % 10 == 0){
-    //     //     struct event poppedEvent = pop(&eventQueue); //this is making things act weird.
-    //     //     printf("Main: Popped Event: %d\n", poppedEvent.ProcessID);
-    //     //     printf("Main: Head(test): %d\n", eventQueue.head->ProcessID);
-    //     // }
-    //     count++;
-    // }
+    struct event *finishEvent;
+    finishEvent = malloc(sizeof(struct event));
+    initEvent(finishEvent, &eventQueue);
+    finishEvent->Time = config.FIN_TIME;
+    finishEvent->eventType = SIM_END;
+    push(finishEvent, &eventQueue);
+
+    struct queue cpuQueue;
+    struct queue disk1Queue;
+    struct queue disk2Queue;
+    struct queue networkQueue;
+    // while(isEmpty(&eventQueue) != 1){
     int count = 0;
-    while(count <= 100){
-        struct event *newEvent;
-        newEvent = malloc(sizeof(struct event));
-        initEvent(newEvent, &eventQueue);
-        push(newEvent, &eventQueue); 
-        // printf("Main: Tail of queue: %d\n", eventQueue.tail->ProcessID);
-        // printf("Main: Head of queue: %d\n", eventQueue.head->ProcessID);
-        if(count % 10 == 0){
-            // struct event poppedEvent = pop(&eventQueue); //this is making things act weird.
-            // printf("Main: Popped Event: %d\n", poppedEvent.ProcessID);
+    while(isEmpty(&eventQueue) != 1){
+        struct event event = pop(&eventQueue);
+        printf("Main loop: Event ID: %d |Event Time: %d | Event Type: %s\n", 
+                            event.ProcessID, event.Time, types[event.eventType]);
+        switch(event.eventType){
+            case SIM_START:
+                event.eventType = ARRIVAL;
+                // event.ProcessID = 1;
+                push(&event, &eventQueue);
+            case ARRIVAL:
+                event.eventType = ARRIVE_CPU;
+            case ARRIVE_CPU:
+                break;
+            case FINISH_CPU:
+                break;
+            case EXIT_SYSTEM:
+                break;
+            case ARRIVE_DISK1:
+                break;
+            case ARRIVE_DISK2:
+                break;
+            case FINISH_DISK1:
+                break;
+            case FINISH_DISK2:
+                break;
+            case ARRIVE_NETWORK:
+                break;
+            case FINISH_NETWORK:
+                break;
+            case FINISH:
+                break;
+            case SIM_END:
+                exit(0);
         }
-        count ++;
+        count++;
     }
+    // struct event *head = eventQueue.head;
+    // while(head != NULL){
+    //     printf("Main: Event ID: %d | Time: %d\n", head->ProcessID, head->Time);
+    //     head = head->next;
+    // }
+    // int count = 0;
+    // while(count <= 100){
+    //     struct event *newEvent;
+    //     newEvent = malloc(sizeof(struct event));
+    //     initEvent(newEvent, &eventQueue);
+    //     push(newEvent, &eventQueue); 
+    //     printf("Main: Tail of queue: %d\n", eventQueue.tail->ProcessID);
+    //     printf("Main: Head of queue: %d\n", eventQueue.head->ProcessID);
+    //     if(count % 10 == 0){
+    //         struct event poppedEvent = pop(&eventQueue); //this is making things act weird.
+    //         printf("Main: Popped Event: %d\n", poppedEvent.ProcessID);
+    //     }
+    //     count ++;
+    // }
     // printf("Main: Head(test): %d\n", eventQueue.head->ProcessID);
     // printf("Main: Head next(test): %d\n", eventQueue.head->next->ProcessID);
 
@@ -125,21 +161,8 @@ int main(int argc, char* argv[]){
     // printf("Main: Tail(test): %d\n", eventQueue.tail->ProcessID);
     // printf("Main: Tail prev(test): %d\n", eventQueue.tail->prev->ProcessID);
     // printf("Main: Tail prev next(test): %d\n", eventQueue.tail->prev->next->ProcessID);
-    
-    
-    sortEventQueue(&eventQueue);
-    struct event *curr = eventQueue.head;
-    while(curr->next != NULL){
-        printf("Sort check: Current time: %d | ID: %d\n", curr->Time, curr->ProcessID);
-        if(curr->next != NULL){
-            curr = curr->next;
-        }
-        count++;
-    }
-    printf("Main: Size of EventQueue memory: %lu\n", sizeof(event)*eventQueue.count);
-    // //I don't malloc any memory so do I have to free it?
-}
 
+}
 //parses config file and sets variables
 //DONE passed test
 void initConfigFile(){
@@ -213,48 +236,11 @@ int isEmpty(struct queue *que){
     }
 }
 
-void startingEvent(struct event *newEvent, struct queue *que){
-    newEvent->ProcessID = -1;
-    newEvent->eventType = PROCESS_ARRIVAL;
-    newEvent->Time = config.INIT_TIME;//I don't understand how the time works?
-    newEvent->Process = ""; //what even is this??
-    char *types[13] = {"SIM_START","ARRIVAL", "ARRIVE_CPU", "FINISH_CPU","EXIT_SYSTEM", 
-                    "ARRIVE_DISK1", "ARRIVE_DISK2","FINISH_DISK1", "FINISH_DISK2",
-                    "ARRIVE_NETWORK", "FINISH_NETWORK", "FINISH", "SIM_END"};
-    
-    // printf("initEvent: Event ID: %d\n", newEvent->ProcessID);
-
-    // int index = newEvent->eventType; //what is this and what does it do?
-
-    // printf("initEvent: Event Type: %s\n", types[index]);//how do you get this to be a string?
-    // printf("initEvent: Process arrival: %s\n", newEvent->Process);
-}
-
-void endEvent(struct event *newEvent, struct queue *que){
-    newEvent->ProcessID = -1;
-    newEvent->eventType = PROCESS_ARRIVAL;
-    newEvent->Time = config.FIN_TIME;//I don't understand how the time works?
-    newEvent->Process = ""; //what even is this??
-    char *types[13] = {"SIM_START","ARRIVAL", "ARRIVE_CPU", "FINISH_CPU","EXIT_SYSTEM", 
-                    "ARRIVE_DISK1", "ARRIVE_DISK2","FINISH_DISK1", "FINISH_DISK2",
-                    "ARRIVE_NETWORK", "FINISH_NETWORK", "FINISH", "SIM_END"};
-    // printf("initEvent: Event ID: %d\n", newEvent->ProcessID);
-
-    // int index = newEvent->eventType; //what is this and what does it do?
-
-    // printf("initEvent: Event Type: %s\n", types[index]);//how do you get this to be a string?
-    // printf("initEvent: Process arrival: %s\n", newEvent->Process);
-}
-
 //works but needs time and type and process worked on
 void initEvent(struct event *newEvent, struct queue *que){
     newEvent->ProcessID = eventid++;
-    newEvent->eventType = PROCESS_ARRIVAL; 
+    newEvent->eventType = SIM_START; 
     newEvent->Time = getTime();//I don't understand how the time works
-    newEvent->Process = ""; //what even is this??
-    char *types[13] = {"SIM_START","ARRIVAL", "ARRIVE_CPU", "FINISH_CPU","EXIT_SYSTEM", 
-                    "ARRIVE_DISK1", "ARRIVE_DISK2","FINISH_DISK1", "FINISH_DISK2",
-                    "ARRIVE_NETWORK", "FINISH_NETWORK", "FINISH", "SIM_END"};
     // printf("initEvent: Event ID: %d\n", newEvent->ProcessID);
     int index = newEvent->eventType;
     // printf("initEvent: Event Type: %s\n", types[index]);//how do you get this to be a string?
@@ -274,7 +260,7 @@ void push(struct event *newEvent, struct queue *que){
         newEvent->prev = que->tail;
         que->tail->next = newEvent;
         que->tail = newEvent;
-        newEvent = NULL;
+        // newEvent = NULL;
     }
     //newevent next = null
     //oldtail.next = new event 
@@ -282,6 +268,10 @@ void push(struct event *newEvent, struct queue *que){
 }
 
 struct event pop(struct queue *que){
+    if(que->count == 1){
+        printf("Pop: Program complete. Exiting...");
+        exit(0);
+    }
     struct event poppedEvent = *que->head;
     struct event *newHead;
     newHead = que->head->next;
@@ -296,6 +286,7 @@ struct event pop(struct queue *que){
 
 //start of priority queue methods
 //Done and partially tested
+//copied
 void sortEventQueue(struct queue *que){
     //get first node
     //compare to second node
@@ -330,7 +321,7 @@ void swap(struct event *larger, struct event *smaller){
     larger->Time = smaller->Time;
 
     //move all temp(large) data into small data
-    larger->Process = smaller->Process;
+    larger->ProcessID = smaller->ProcessID;
     smaller->ProcessID = temp.ProcessID;
     smaller->eventType = temp.eventType;
     smaller->Time = temp.Time;
@@ -339,7 +330,6 @@ void swap(struct event *larger, struct event *smaller){
 // Done passed test
 int randomNumberGenerator(int min, int max){
     int random = rand() % (max - min + 1) + max;
-    // (highrange-lowrange)+1
     return random;
 }
 
@@ -350,31 +340,49 @@ int getTime(){
 }
 
 
+// Test code
 
 
-// #define RANDSIZE 256
-// static char randstate[RANDSIZE];
-// initstate(seed, randstate, RANDSIZE);
+// int random = randomNumberGenerator(config.ARRIVE_MAX, config.ARRIVE_MIN); //test random number generator
+    // printf("Main: Random: %d\n", random);
 
-// int myrandom(int low, int high){/* It returns a random number in the interval [low,high]*/
-//     return (low + random()%(high-low+1)); 
-//     /* this assumes that all the bits of the number generated by 
-//     random are equally random, which is not true in old implementations 
-//     of random */
-// }
+    // while(eventQueue.count < 0){
+    
+    
+    // }
+    //how can I make this not hardcoded?
+    // struct queue *eventQueue;
+    // struct event newEvent2;
+    // initEvent(&newEvent2, &eventQueue);
+    // push(&newEvent2, &eventQueue);
+    // struct event newEvent3;
+    // initEvent(&newEvent3, &eventQueue);
+    // push(&newEvent3, &eventQueue);
+    // int count = 0;
+    // while(count < 100){
+    //     struct event newEvent2;
+    //     initEvent(&newEvent2, &eventQueue);
+    //     push(&newEvent2, &eventQueue);
+    //     // printf("Main: Tail of queue: %d\n", eventQueue.tail->ProcessID);
+    //     // printf("Main: Head of queue: %d\n", eventQueue.head->Time);
+    //     // if(count % 10 == 0){
+    //     //     struct event poppedEvent = pop(&eventQueue); //this is making things act weird.
+    //     //     printf("Main: Popped Event: %d\n", poppedEvent.ProcessID);
+    //     //     printf("Main: Head(test): %d\n", eventQueue.head->ProcessID);
+    //     // }
+    //     count++;
+    // }
 
-// int main() {
-//     /* It generates and prints SIZE random numbers in the interval [10,20]. 
-//     * Then prints out their average (it should be close to 15).*/
-//     int i;
-//     int table[SIZE];
-//     int sum = 0;
-//     initrandom(1357);
-//     for (i=0; i<SIZE; i++) {
-//         table[i] = myrandom(10,20);
-//         sum += table[i];
-//         printf("%2d\n", table[i]);
-//     }
-//     printf("the average is %f\n", sum/(float)SIZE);
-//     exit(0);
-// }
+
+
+     // sortEventQueue(&eventQueue);
+    // struct event *curr = eventQueue.head;
+    // while(curr->next != NULL){
+    //     printf("Sort check: Current time: %d | ID: %d\n", curr->Time, curr->ProcessID);
+    //     if(curr->next != NULL){
+    //         curr = curr->next;
+    //     }
+    //     count++;
+    // }
+    // printf("Main: Size of EventQueue memory: %lu\n", sizeof(event)*eventQueue.count);
+    // //I don't malloc any memory so do I have to free it?
