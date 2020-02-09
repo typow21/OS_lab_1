@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <time.h>
 
 // #define INIT_CAPACITY 3
 
@@ -11,7 +10,7 @@ struct Config{
         int SEED ;
         int INIT_TIME;
         int FIN_TIME ;
-        int ARRIVE_MIN ;
+        int ARRIVE_MIN;
         int ARRIVE_MAX;
         double QUIT_PROB;
         double NETWORK_PROB;
@@ -29,10 +28,10 @@ struct Config{
 
 struct event{
     int ProcessID;
-    enum types{ PROCESS_ARRIVAL, PROCESS_ARRIVE_CPU, PROCESS_FINISH_CPU,
+    enum types{ SIM_START, PROCESS_ARRIVAL, PROCESS_ARRIVE_CPU, PROCESS_FINISH_CPU,
                 PROCESS_EXIT_SYSTEM, PROCESS_ARRIVE_DISK1, PROCESS_ARRIVE_DISK2,
                 PROCESS_FINISH_DISK1, PROCESS_FINISH_DISK2, PROCESS_ARRIVE_NETWORK,
-                PROCESS_FINISH_NETWORK, PROCESS_FINSIH}eventType;
+                PROCESS_FINISH_NETWORK, PROCESS_FINSIH, SIM_END}eventType;
     int Time;   //what is this??
     char *Process; //what is a process?
     struct event *prev;
@@ -43,33 +42,25 @@ struct queue{
     int count;
     struct event *head;
     struct event *tail;
-}queue;
-
+};
 
 //global variables
-int eventid = 1; //incremented when event is created
-// int time = 0; //is this even needed?
+int eventid = 0; //incremented when event is created
+int clock = 0; //is this even needed?
 bool cpuOccupied = false;
 bool diskOccupied = false;
-int eQsize = 5;
-int cpuSize = 0;
-int disk1Size = 0;
-int disk2Size = 0;
-int networkSize = 0;
-
 // is time real?
 
 //methods
-void initConfigFile(struct Config *configVars);
+void initConfigFile();
 void initQueue(struct queue *que);
+int randomNumberGenerator(int high, int low);
 void initEvent(struct event *event, struct queue *que);
 int isEmpty(struct queue *que);
 void push(struct event *event, struct queue *que);
 struct event pop(struct queue *que);
-void sortQueue(struct queue *que);
-
-//random seed
-// srand();
+void sortEventQueue(struct queue *que);
+void swap(struct event *first, struct event *second);
 
 // void push(struct Event queue[], struct Event *newEvent); //what if the stuct that I pass is dynamic?
 // struct Event pop(struct Event *queue);
@@ -78,18 +69,30 @@ int randomNumberGenerator();
 int getTime();
 
 int main(int argc, char* argv[]){
+    struct queue eventQueue;
+
+    initQueue(&eventQueue);
+    printf("Main: Size of queue: %lu\n", sizeof(event));
+    initConfigFile();
+    srand(config.SEED); //random seed
+    printf("Main: arrive max: %d\n", config.ARRIVE_MAX);
+    int random = randomNumberGenerator(config.ARRIVE_MAX, config.ARRIVE_MIN); //test random number generator
+    printf("Main: Random: %d\n", random);
+    // while(eventQueue.count < 0){
+
+    // }
+
     //how can I make this not hardcoded?
-    initQueue(&queue);
-    printf("Main: Size of EventQueue: %lu\n", sizeof(event));
+    // struct queue *eventQueue;
     struct event newEvent;
     // struct event newEvent2;
     // struct event newEvent3;
     // struct event newEvent4;
-    initEvent(&newEvent, &queue);
+    initEvent(&newEvent, &eventQueue);
     // initEvent(&newEvent2, &queue);
     // initEvent(&newEvent3, &queue);
     // initEvent(&newEvent4, &queue);
-    push(&newEvent, &queue);
+    push(&newEvent, &eventQueue);
     // push(&newEvent2, &queue);
     // push(&newEvent3, &queue);
     // push(&newEvent4, &queue);
@@ -103,44 +106,82 @@ int main(int argc, char* argv[]){
     int count = 0;
     while(count < 100){
         struct event newEvent2;
-        initEvent(&newEvent2, &queue);
-        push(&newEvent2, &queue);
-        printf("Main: Tail of queue: %d\n", queue.tail->ProcessID);
+        initEvent(&newEvent2, &eventQueue);
+        push(&newEvent2, &eventQueue);
+        // printf("Main: Tail of queue: %d\n", eventQueue.tail->Time);
+        // printf("Main: Head of queue: %d\n", eventQueue.head->Time);
         if(count % 10 == 0){
-            struct event poppedEvent = pop(&queue);
-            printf("Main: Popped Event: %d\n", poppedEvent.ProcessID);
-            
+            // struct event poppedEvent = pop(&eventQueue);
+            // printf("Main: Popped Event: %d\n", poppedEvent.Time);
         }
         count++;
     }
-    printf("Main: Size of EventQueue memory: %lu\n", sizeof(queue)*queue.count);
+    // sortEventQueue(&eventQueue);
+    struct event *curr = eventQueue.head;
+    count = 0;
+    while(count < 10){
+        printf("Current time: %d\n", curr->next->ProcessID);
+        *curr = *curr->next;
+        count++;
+    }
+    printf("Main: Size of EventQueue memory: %lu\n", sizeof(event)*eventQueue.count);
     //I don't malloc any memory so do I have to free it?
 }
 
 //parses config file and sets variables
-//DONE
-void initConfigFile(struct Config *configVars){
+//DONE passed test
+void initConfigFile(){
     FILE *file;
     char *configFile = "CONFIG.txt";
     file = fopen(configFile, "r");
     if(!configFile){
-        printf("File not found");
+        printf("File not found.");
     }
     char variable[BUFSIZ];
     fscanf(file, "%s %d", variable, &config.SEED);
+    // printf("%s %d\n", variable, config.SEED);
+
     fscanf(file, "%s %d", variable, &config.INIT_TIME);
+    // printf("%s %d\n", variable, config.INIT_TIME);
+
+    fscanf(file, "%s %d", variable, &config.FIN_TIME);
+    // printf("%s %d\n", variable, config.FIN_TIME);
+
     fscanf(file, "%s %d", variable, &config.ARRIVE_MIN);
+    // printf("%s %d\n", variable, config.ARRIVE_MIN);
+
     fscanf(file, "%s %d", variable, &config.ARRIVE_MAX);
+    // printf("%s %d\n", variable, config.ARRIVE_MAX);
+
     fscanf(file, "%s %lf", variable, &config.QUIT_PROB);
+    // printf("%s %f\n", variable, config.QUIT_PROB);
+
     fscanf(file, "%s %lf", variable, &config.NETWORK_PROB);
+    // printf("%s %f\n", variable, config.NETWORK_PROB);
+
     fscanf(file, "%s %d", variable, &config.CPU_MIN);
+    // printf("%s %d\n", variable, config.CPU_MIN);
+
     fscanf(file, "%s %d", variable, &config.CPU_MAX);
+    // printf("%s %d\n", variable, config.CPU_MAX);
+
     fscanf(file, "%s %d", variable, &config.DISK1_MIN);
+    // printf("%s %d\n", variable, config.DISK1_MIN);
+
     fscanf(file, "%s %d", variable, &config.DISK1_MAX);
+    // printf("%s %d\n", variable, config.DISK1_MAX);
+
     fscanf(file, "%s %d", variable, &config.DISK2_MIN);
+    // printf("%s %d\n", variable, config.DISK2_MIN);
+
     fscanf(file, "%s %d", variable, &config.DISK2_MAX);
+    printf("%s %d\n", variable, config.DISK2_MAX);
+
     fscanf(file, "%s %d", variable, &config.NETWORK_MIN);
+    // printf("%s %d\n", variable, config.NETWORK_MIN);
+
     fscanf(file, "%s %d", variable, &config.NETWORK_MAX);
+    // printf("%s %d\n", variable, config.NETWORK_MAX);
     fclose(file);
 }
 
@@ -160,15 +201,48 @@ int isEmpty(struct queue *que){
     }
 }
 
+void startingEvent(struct event *newEvent, struct queue *que){
+    newEvent->ProcessID = -1;
+    newEvent->eventType = PROCESS_ARRIVAL;
+    newEvent->Time = config.INIT_TIME;//I don't understand how the time works?
+    newEvent->Process = ""; //what even is this??
+    char *types[13] = {"SIM_START","ARRIVAL", "ARRIVE_CPU", "FINISH_CPU","EXIT_SYSTEM", 
+                    "ARRIVE_DISK1", "ARRIVE_DISK2","FINISH_DISK1", "FINISH_DISK2",
+                    "ARRIVE_NETWORK", "FINISH_NETWORK", "FINISH", "SIM_END"};
+    
+    // printf("initEvent: Event ID: %d\n", newEvent->ProcessID);
+
+    // int index = newEvent->eventType; //what is this and what does it do?
+
+    // printf("initEvent: Event Type: %s\n", types[index]);//how do you get this to be a string?
+    // printf("initEvent: Process arrival: %s\n", newEvent->Process);
+}
+
+void endEvent(struct event *newEvent, struct queue *que){
+    newEvent->ProcessID = -1;
+    newEvent->eventType = PROCESS_ARRIVAL;
+    newEvent->Time = config.FIN_TIME;//I don't understand how the time works?
+    newEvent->Process = ""; //what even is this??
+    char *types[13] = {"SIM_START","ARRIVAL", "ARRIVE_CPU", "FINISH_CPU","EXIT_SYSTEM", 
+                    "ARRIVE_DISK1", "ARRIVE_DISK2","FINISH_DISK1", "FINISH_DISK2",
+                    "ARRIVE_NETWORK", "FINISH_NETWORK", "FINISH", "SIM_END"};
+    // printf("initEvent: Event ID: %d\n", newEvent->ProcessID);
+
+    // int index = newEvent->eventType; //what is this and what does it do?
+
+    // printf("initEvent: Event Type: %s\n", types[index]);//how do you get this to be a string?
+    // printf("initEvent: Process arrival: %s\n", newEvent->Process);
+}
+
 //works but needs time and type and process worked on
 void initEvent(struct event *newEvent, struct queue *que){
     newEvent->ProcessID = eventid++;
     newEvent->eventType = PROCESS_ARRIVAL; 
-    newEvent->Time = getTime();//I don't understand how the time works?
+    newEvent->Time = getTime();//I don't understand how the time works
     newEvent->Process = ""; //what even is this??
-    char *types[11] = {"PROCESS_ARRIVAL", "PROCESS_ARRIVE_CPU", "PROCESS_FINISH_CPU","PROCESS_EXIT_SYSTEM", 
-                    "PROCESS_ARRIVE_DISK1", "PROCESS_ARRIVE_DISK2","PROCESS_FINISH_DISK1", "PROCESS_FINISH_DISK2",
-                    "PROCESS_ARRIVE_NETWORK", "PROCESS_FINISH_NETWORK", "PROCESS_FINISH"};
+    char *types[13] = {"SIM_START","ARRIVAL", "ARRIVE_CPU", "FINISH_CPU","EXIT_SYSTEM", 
+                    "ARRIVE_DISK1", "ARRIVE_DISK2","FINISH_DISK1", "FINISH_DISK2",
+                    "ARRIVE_NETWORK", "FINISH_NETWORK", "FINISH", "SIM_END"};
     // printf("initEvent: Event ID: %d\n", newEvent->ProcessID);
     int index = newEvent->eventType;
     // printf("initEvent: Event Type: %s\n", types[index]);//how do you get this to be a string?
@@ -213,18 +287,53 @@ struct event pop(struct queue *que){
 //start of priority queue methods
 //TO_DO
 void sortEventQueue(struct queue *que){
-    printf("hi");
+    //get first node
+    //compare to second node
+    //if second < first then swap
+    int swapped, i;
+    struct event *first = que->head;
+    struct event *last= que->tail;
+
+    int sorted = 0;
+    struct event *next;
+    while(sorted < que->count){
+        next = first->next;
+        while(next != NULL){
+            if(first->Time > next->Time){
+                swap(first, next);
+                first = next;
+            }
+        }
+        sorted++;   
+    }
 }
 
-// TO_DO
-int randomNumberGenerator(){
+void swap(struct event *larger, struct event *smaller){
+    struct event temp = *larger; //create temp
+
+    //move all small data into large data
+    larger->ProcessID = smaller->ProcessID;
+    larger->eventType = smaller->eventType;
+    larger->Time = smaller->Time;
+
+    //move all temp(large) data into small data
+    larger->Process = smaller->Process;
+    smaller->ProcessID = temp.ProcessID;
+    smaller->eventType = temp.eventType;
+    smaller->Time = temp.Time;
+}
+
+// Done passed test
+int randomNumberGenerator(int min, int max){
+    int random = rand() % (max - min + 1) + max;
     // (highrange-lowrange)+1
-    return 1;
+    return random;
 }
 
 //TO_DO
 int getTime(){
-    return 1;
+    int time = randomNumberGenerator(100, 0);
+    return time;
 }
 
 
