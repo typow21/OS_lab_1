@@ -23,7 +23,7 @@ struct Config{
         int DISK2_MAX ;
         int NETWORK_MIN ;
         int NETWORK_MAX;
-};
+}config;
 
 //struct for the event type
 
@@ -68,6 +68,8 @@ void push(struct event *event, struct queue *que);
 struct event pop(struct queue *que);
 void sortQueue(struct queue *que);
 
+//random seed
+// srand();
 
 // void push(struct Event queue[], struct Event *newEvent); //what if the stuct that I pass is dynamic?
 // struct Event pop(struct Event *queue);
@@ -107,9 +109,12 @@ int main(int argc, char* argv[]){
         if(count % 10 == 0){
             struct event poppedEvent = pop(&queue);
             printf("Main: Popped Event: %d\n", poppedEvent.ProcessID);
+            
         }
         count++;
     }
+    printf("Main: Size of EventQueue memory: %lu\n", sizeof(queue)*queue.count);
+    //I don't malloc any memory so do I have to free it?
 }
 
 //parses config file and sets variables
@@ -122,20 +127,20 @@ void initConfigFile(struct Config *configVars){
         printf("File not found");
     }
     char variable[BUFSIZ];
-    fscanf(file, "%s %d", variable, &configVars->SEED);
-    fscanf(file, "%s %d", variable, &configVars->INIT_TIME);
-    fscanf(file, "%s %d", variable, &configVars->ARRIVE_MIN);
-    fscanf(file, "%s %d", variable, &configVars->ARRIVE_MAX);
-    fscanf(file, "%s %lf", variable, &configVars->QUIT_PROB);
-    fscanf(file, "%s %lf", variable, &configVars->NETWORK_PROB);
-    fscanf(file, "%s %d", variable, &configVars->CPU_MIN);
-    fscanf(file, "%s %d", variable, &configVars->CPU_MAX);
-    fscanf(file, "%s %d", variable, &configVars->DISK1_MIN);
-    fscanf(file, "%s %d", variable, &configVars->DISK1_MAX);
-    fscanf(file, "%s %d", variable, &configVars->DISK2_MIN);
-    fscanf(file, "%s %d", variable, &configVars->DISK2_MAX);
-    fscanf(file, "%s %d", variable, &configVars->NETWORK_MIN);
-    fscanf(file, "%s %d", variable, &configVars->NETWORK_MAX);
+    fscanf(file, "%s %d", variable, &config.SEED);
+    fscanf(file, "%s %d", variable, &config.INIT_TIME);
+    fscanf(file, "%s %d", variable, &config.ARRIVE_MIN);
+    fscanf(file, "%s %d", variable, &config.ARRIVE_MAX);
+    fscanf(file, "%s %lf", variable, &config.QUIT_PROB);
+    fscanf(file, "%s %lf", variable, &config.NETWORK_PROB);
+    fscanf(file, "%s %d", variable, &config.CPU_MIN);
+    fscanf(file, "%s %d", variable, &config.CPU_MAX);
+    fscanf(file, "%s %d", variable, &config.DISK1_MIN);
+    fscanf(file, "%s %d", variable, &config.DISK1_MAX);
+    fscanf(file, "%s %d", variable, &config.DISK2_MIN);
+    fscanf(file, "%s %d", variable, &config.DISK2_MAX);
+    fscanf(file, "%s %d", variable, &config.NETWORK_MIN);
+    fscanf(file, "%s %d", variable, &config.NETWORK_MAX);
     fclose(file);
 }
 
@@ -170,7 +175,7 @@ void initEvent(struct event *newEvent, struct queue *que){
     // printf("initEvent: Process arrival: %s\n", newEvent->Process);
 }
 
-//works
+//Done needs testing
 void push(struct event *newEvent, struct queue *que){
     que->count++;
     if(isEmpty(que) == 1){
@@ -213,6 +218,7 @@ void sortEventQueue(struct queue *que){
 
 // TO_DO
 int randomNumberGenerator(){
+    // (highrange-lowrange)+1
     return 1;
 }
 
@@ -220,6 +226,7 @@ int randomNumberGenerator(){
 int getTime(){
     return 1;
 }
+
 
 
 
@@ -233,6 +240,7 @@ int getTime(){
 //     random are equally random, which is not true in old implementations 
 //     of random */
 // }
+
 // int main() {
 //     /* It generates and prints SIZE random numbers in the interval [10,20]. 
 //     * Then prints out their average (it should be close to 15).*/
