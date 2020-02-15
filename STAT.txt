@@ -1,0 +1,31 @@
+----------Queues----------
+Average size of CPU Queue: 6.727273
+Max size of Queue: 19
+Average size of Disk 1 Queue: 2.465241
+Max size of Disk 1 Queue: 7
+Average size of Disk 2 Queue: 2.983957
+Max size of Disk 2 Queue: 7
+Average size of Network Queue: 0.000000
+Max size of Network Queue: 0
+
+----------Utilization----------
+Utilization of CPU: 0.960100
+Utilization of Disk1: 0.994400
+Utilization of Disk 2: 0.994700
+Utilization of network: 0.071800
+
+----------Response Time----------
+CPU max response time: 109
+DISK 1 max response time: 249
+DISK 2 max response time: 249
+NETWORK max response time: 718
+CPU average response time: 51.069149
+DISK 1 average response time: 110.488889
+DISK 2 average response time: 115.662791
+NETWORK average response time: 718.000000
+
+----------Throughput----------
+Throughput of CPU: 0.018800
+Throughput of DISK 1: 0.009000
+Throughput of DISK 2: 0.008600
+Throughput of NETWORK: 0.000100

@@ -1,0 +1,935 @@
+At time 0, process 0 enters system
+At time 0, process 0 enters CPU
+At time 10, process 0 exits CPU
+At time 10, process 0 begins I/O on Disk 1
+At time 84, process 1 enters system
+At time 84, process 1 enters CPU
+At time 120, process 2 enters system
+At time 127, process 1 exits CPU
+At time 127, process 2 enters CPU
+At time 127, process 1 begins I/O on Disk 2
+At time 163, process 2 exits CPU
+At time 184, process 3 enters system
+At time 184, process 3 enters CPU
+At time 193, process 4 enters system
+At time 227, process 3 exits CPU
+At time 227, process 4 enters CPU
+At time 247, process 0 finishes on DISK 1
+At time 247, process 3 begins I/O on Disk 1
+At time 272, process 4 exits CPU
+At time 292, process 5 enters system
+At time 292, process 5 enters CPU
+At time 294, process 5 exits CPU
+At time 331, process 1 finishes on Disk 2
+At time 331, process 2 begins I/O on Disk 2
+At time 388, process 6 enters system
+At time 388, process 6 enters CPU
+At time 418, process 7 enters system
+At time 421, process 3 finishes on DISK 1
+At time 421, process 4 begins I/O on Disk 1
+At time 435, process 8 enters system
+At time 438, process 4 finishes on DISK 1
+At time 442, process 6 exits CPU
+At time 442, process 7 enters CPU
+At time 442, process 6 begins I/O on Disk 1
+At time 446, process 7 exits CPU
+At time 446, process 8 enters CPU
+At time 486, process 2 finishes on Disk 2
+At time 486, process 5 begins I/O on Disk 2
+At time 498, process 8 exits CPU
+At time 516, process 9 enters system
+At time 516, process 9 enters CPU
+At time 550, process 6 finishes on DISK 1
+At time 550, process 7 begins I/O on Disk 1
+At time 552, process 9 exits CPU
+At time 564, process 7 finishes on DISK 1
+At time 564, process 9 begins I/O on Disk 1
+At time 571, process 5 finishes on Disk 2
+At time 571, process 8 begins I/O on Disk 2
+At time 600, process 10 enters system
+At time 600, process 10 enters CPU
+At time 617, process 11 enters system
+At time 632, process 9 finishes on DISK 1
+At time 665, process 10 exits CPU
+At time 665, process 11 enters CPU
+At time 665, process 10 begins I/O on Disk 1
+At time 691, process 12 enters system
+At time 743, process 13 enters system
+At time 749, process 8 finishes on Disk 2
+At time 756, process 14 enters system
+At time 759, process 11 exits CPU
+At time 759, process 12 enters CPU
+At time 759, process 11 begins I/O on Disk 2
+At time 778, process 12 exits CPU
+At time 778, process 13 enters CPU
+At time 802, process 11 finishes on Disk 2
+At time 802, process 12 begins I/O on Disk 2
+At time 810, process 15 enters system
+At time 829, process 13 exits CPU
+At time 829, process 14 enters CPU
+At time 864, process 16 enters system
+At time 865, process 10 finishes on DISK 1
+At time 870, process 14 exits CPU
+At time 870, process 15 enters CPU
+At time 870, process 14 begins I/O on Disk 1
+At time 927, process 17 enters system
+At time 934, process 15 exits CPU
+At time 934, process 16 enters CPU
+At time 991, process 14 finishes on DISK 1
+At time 991, process 15 begins I/O on Disk 1
+At time 1000, process 16 exits CPU
+At time 1000, process 17 enters CPU
+At time 1024, process 18 enters system
+At time 1028, process 12 finishes on Disk 2
+At time 1028, process 13 begins I/O on Disk 2
+At time 1074, process 19 enters system
+At time 1075, process 17 exits CPU
+At time 1075, process 18 enters CPU
+At time 1115, process 20 enters system
+At time 1169, process 18 exits CPU
+At time 1169, process 19 enters CPU
+At time 1193, process 21 enters system
+At time 1211, process 15 finishes on DISK 1
+At time 1211, process 16 begins I/O on Disk 1
+At time 1231, process 19 exits CPU
+At time 1231, process 20 enters CPU
+At time 1234, process 13 finishes on Disk 2
+At time 1234, process 17 begins I/O on Disk 2
+At time 1237, process 20 exits CPU
+At time 1237, process 21 enters CPU
+At time 1267, process 22 enters system
+At time 1276, process 17 finishes on Disk 2
+At time 1276, process 18 begins I/O on Disk 2
+At time 1310, process 21 exits CPU
+At time 1310, process 22 enters CPU
+At time 1312, process 23 enters system
+At time 1325, process 22 exits CPU
+At time 1325, process 23 enters CPU
+At time 1375, process 24 enters system
+At time 1391, process 16 finishes on DISK 1
+At time 1391, process 19 begins I/O on Disk 1
+At time 1411, process 23 exits CPU
+At time 1411, process 24 enters CPU
+At time 1422, process 25 enters system
+At time 1448, process 24 exits CPU
+At time 1448, process 25 enters CPU
+At time 1462, process 25 exits CPU
+At time 1464, process 18 finishes on Disk 2
+At time 1464, process 20 begins I/O on Disk 2
+At time 1478, process 26 enters system
+At time 1478, process 26 enters CPU
+At time 1481, process 27 enters system
+At time 1513, process 20 finishes on Disk 2
+At time 1513, process 21 begins I/O on Disk 2
+At time 1519, process 28 enters system
+At time 1539, process 26 exits CPU
+At time 1539, process 27 enters CPU
+At time 1571, process 27 exits CPU
+At time 1571, process 28 enters CPU
+At time 1618, process 19 finishes on DISK 1
+At time 1618, process 29 enters system
+At time 1618, process 22 begins I/O on Disk 1
+At time 1632, process 28 exits CPU
+At time 1632, process 29 enters CPU
+At time 1660, process 29 exits CPU
+At time 1673, process 30 enters system
+At time 1673, process 30 enters CPU
+At time 1685, process 30 exits CPU
+At time 1705, process 31 enters system
+At time 1705, process 31 enters CPU
+At time 1719, process 31 exits CPU
+At time 1745, process 21 finishes on Disk 2
+At time 1745, process 24 begins I/O on Disk 2
+At time 1760, process 22 finishes on DISK 1
+At time 1760, process 23 begins I/O on Disk 1
+At time 1792, process 32 enters system
+At time 1792, process 32 enters CPU
+At time 1835, process 32 exits CPU
+At time 1842, process 23 finishes on DISK 1
+At time 1842, process 25 begins I/O on Disk 1
+At time 1878, process 25 finishes on DISK 1
+At time 1878, process 28 begins I/O on Disk 1
+At time 1886, process 33 enters system
+At time 1886, process 33 enters CPU
+At time 1915, process 34 enters system
+At time 1992, process 24 finishes on Disk 2
+At time 1992, process 26 begins I/O on Disk 2
+At time 1993, process 33 exits CPU
+At time 1993, process 34 enters CPU
+At time 1996, process 35 enters system
+At time 2027, process 36 enters system
+At time 2050, process 37 enters system
+At time 2060, process 38 enters system
+At time 2061, process 34 exits CPU
+At time 2061, process 35 enters CPU
+At time 2095, process 28 finishes on DISK 1
+At time 2095, process 30 begins I/O on Disk 1
+At time 2105, process 30 finishes on DISK 1
+At time 2105, process 32 begins I/O on Disk 1
+At time 2147, process 35 exits CPU
+At time 2147, process 36 enters CPU
+At time 2147, process 35 exits the system
+At time 2153, process 39 enters system
+At time 2190, process 36 exits CPU
+At time 2190, process 37 enters CPU
+At time 2227, process 26 finishes on Disk 2
+At time 2227, process 27 begins I/O on Disk 2
+At time 2240, process 40 enters system
+At time 2274, process 37 exits CPU
+At time 2274, process 38 enters CPU
+At time 2320, process 41 enters system
+At time 2334, process 38 exits CPU
+At time 2334, process 39 enters CPU
+At time 2338, process 39 exits CPU
+At time 2338, process 40 enters CPU
+At time 2354, process 32 finishes on DISK 1
+At time 2354, process 33 begins I/O on Disk 1
+At time 2361, process 40 exits CPU
+At time 2361, process 41 enters CPU
+At time 2393, process 42 enters system
+At time 2403, process 41 exits CPU
+At time 2403, process 42 enters CPU
+At time 2403, process 41 exits the system
+At time 2438, process 43 enters system
+At time 2457, process 42 exits CPU
+At time 2457, process 43 enters CPU
+At time 2461, process 27 finishes on Disk 2
+At time 2461, process 29 begins I/O on Disk 2
+At time 2473, process 43 exits CPU
+At time 2484, process 44 enters system
+At time 2484, process 44 enters CPU
+At time 2486, process 45 enters system
+At time 2506, process 33 finishes on DISK 1
+At time 2506, process 36 begins I/O on Disk 1
+At time 2544, process 46 enters system
+At time 2557, process 47 enters system
+At time 2582, process 44 exits CPU
+At time 2582, process 45 enters CPU
+At time 2633, process 29 finishes on Disk 2
+At time 2633, process 31 begins I/O on Disk 2
+At time 2642, process 48 enters system
+At time 2643, process 45 exits CPU
+At time 2643, process 46 enters CPU
+At time 2648, process 49 enters system
+At time 2664, process 31 finishes on Disk 2
+At time 2664, process 34 begins I/O on Disk 2
+At time 2703, process 36 finishes on DISK 1
+At time 2703, process 37 begins I/O on Disk 1
+At time 2705, process 34 finishes on Disk 2
+At time 2705, process 38 begins I/O on Disk 2
+At time 2715, process 38 finishes on Disk 2
+At time 2715, process 42 begins I/O on Disk 2
+At time 2731, process 50 enters system
+At time 2746, process 46 exits CPU
+At time 2746, process 47 enters CPU
+At time 2769, process 51 enters system
+At time 2777, process 52 enters system
+At time 2780, process 53 enters system
+At time 2790, process 54 enters system
+At time 2853, process 47 exits CPU
+At time 2853, process 48 enters CPU
+At time 2865, process 42 finishes on Disk 2
+At time 2865, process 43 begins I/O on Disk 2
+At time 2888, process 55 enters system
+At time 2894, process 48 exits CPU
+At time 2894, process 49 enters CPU
+At time 2896, process 49 exits CPU
+At time 2896, process 50 enters CPU
+At time 2921, process 50 exits CPU
+At time 2921, process 51 enters CPU
+At time 2933, process 37 finishes on DISK 1
+At time 2933, process 39 begins I/O on Disk 1
+At time 2942, process 56 enters system
+At time 2961, process 39 finishes on DISK 1
+At time 2961, process 40 begins I/O on Disk 1
+At time 2998, process 57 enters system
+At time 3020, process 51 exits CPU
+At time 3020, process 52 enters CPU
+At time 3054, process 52 exits CPU
+At time 3054, process 53 enters CPU
+At time 3054, process 52 exits the system
+At time 3055, process 58 enters system
+At time 3061, process 53 exits CPU
+At time 3061, process 54 enters CPU
+At time 3065, process 40 finishes on DISK 1
+At time 3065, process 44 begins I/O on Disk 1
+At time 3070, process 59 enters system
+At time 3098, process 54 exits CPU
+At time 3098, process 55 enters CPU
+At time 3109, process 55 exits CPU
+At time 3109, process 56 enters CPU
+At time 3114, process 43 finishes on Disk 2
+At time 3114, process 45 begins I/O on Disk 2
+At time 3118, process 44 finishes on DISK 1
+At time 3118, process 49 begins I/O on Disk 1
+At time 3130, process 49 finishes on DISK 1
+At time 3130, process 51 begins I/O on Disk 1
+At time 3147, process 56 exits CPU
+At time 3147, process 57 enters CPU
+At time 3156, process 60 enters system
+At time 3156, process 57 exits CPU
+At time 3156, process 58 enters CPU
+At time 3183, process 58 exits CPU
+At time 3183, process 59 enters CPU
+At time 3193, process 45 finishes on Disk 2
+At time 3193, process 46 begins I/O on Disk 2
+At time 3229, process 51 finishes on DISK 1
+At time 3229, process 53 begins I/O on Disk 1
+At time 3238, process 46 finishes on Disk 2
+At time 3238, process 47 begins I/O on Disk 2
+At time 3247, process 61 enters system
+At time 3292, process 59 exits CPU
+At time 3292, process 60 enters CPU
+At time 3300, process 53 finishes on DISK 1
+At time 3300, process 47 finishes on Disk 2
+At time 3300, process 54 begins I/O on Disk 1
+At time 3300, process 48 begins I/O on Disk 2
+At time 3316, process 54 finishes on DISK 1
+At time 3316, process 55 begins I/O on Disk 1
+At time 3331, process 60 exits CPU
+At time 3331, process 61 enters CPU
+At time 3334, process 62 enters system
+At time 3375, process 63 enters system
+At time 3404, process 64 enters system
+At time 3421, process 65 enters system
+At time 3438, process 61 exits CPU
+At time 3438, process 62 enters CPU
+At time 3461, process 66 enters system
+At time 3530, process 48 finishes on Disk 2
+At time 3530, process 50 begins I/O on Disk 2
+At time 3536, process 62 exits CPU
+At time 3536, process 63 enters CPU
+At time 3540, process 67 enters system
+At time 3545, process 50 finishes on Disk 2
+At time 3545, process 57 begins I/O on Disk 2
+At time 3558, process 55 finishes on DISK 1
+At time 3558, process 56 begins I/O on Disk 1
+At time 3578, process 56 finishes on DISK 1
+At time 3578, process 58 begins I/O on Disk 1
+At time 3605, process 68 enters system
+At time 3611, process 63 exits CPU
+At time 3611, process 64 enters CPU
+At time 3617, process 64 exits CPU
+At time 3617, process 65 enters CPU
+At time 3638, process 65 exits CPU
+At time 3638, process 66 enters CPU
+At time 3649, process 69 enters system
+At time 3665, process 57 finishes on Disk 2
+At time 3665, process 59 begins I/O on Disk 2
+At time 3684, process 70 enters system
+At time 3735, process 66 exits CPU
+At time 3735, process 67 enters CPU
+At time 3782, process 71 enters system
+At time 3785, process 58 finishes on DISK 1
+At time 3785, process 60 begins I/O on Disk 1
+At time 3795, process 67 exits CPU
+At time 3795, process 68 enters CPU
+At time 3834, process 72 enters system
+At time 3836, process 59 finishes on Disk 2
+At time 3836, process 61 begins I/O on Disk 2
+At time 3860, process 68 exits CPU
+At time 3860, process 69 enters CPU
+At time 3898, process 69 exits CPU
+At time 3898, process 70 enters CPU
+At time 3913, process 73 enters system
+At time 3958, process 74 enters system
+At time 3977, process 61 finishes on Disk 2
+At time 3977, process 62 begins I/O on Disk 2
+At time 3979, process 70 exits CPU
+At time 3979, process 71 enters CPU
+At time 3982, process 75 enters system
+At time 4017, process 71 exits CPU
+At time 4017, process 72 enters CPU
+At time 4034, process 60 finishes on DISK 1
+At time 4034, process 63 begins I/O on Disk 1
+At time 4069, process 76 enters system
+At time 4078, process 72 exits CPU
+At time 4078, process 73 enters CPU
+At time 4132, process 73 exits CPU
+At time 4132, process 74 enters CPU
+At time 4147, process 77 enters system
+At time 4198, process 62 finishes on Disk 2
+At time 4198, process 65 begins I/O on Disk 2
+At time 4204, process 74 exits CPU
+At time 4204, process 75 enters CPU
+At time 4224, process 78 enters system
+At time 4225, process 79 enters system
+At time 4242, process 65 finishes on Disk 2
+At time 4242, process 66 begins I/O on Disk 2
+At time 4244, process 75 exits CPU
+At time 4244, process 76 enters CPU
+At time 4255, process 63 finishes on DISK 1
+At time 4255, process 64 begins I/O on Disk 1
+At time 4263, process 66 finishes on Disk 2
+At time 4263, process 68 begins I/O on Disk 2
+At time 4277, process 80 enters system
+At time 4323, process 76 exits CPU
+At time 4323, process 77 enters CPU
+At time 4327, process 81 enters system
+At time 4339, process 68 finishes on Disk 2
+At time 4339, process 70 begins I/O on Disk 2
+At time 4360, process 82 enters system
+At time 4397, process 77 exits CPU
+At time 4397, process 78 enters CPU
+At time 4404, process 64 finishes on DISK 1
+At time 4404, process 67 begins I/O on Disk 1
+At time 4419, process 83 enters system
+At time 4429, process 78 exits CPU
+At time 4429, process 79 enters CPU
+At time 4483, process 79 exits CPU
+At time 4483, process 80 enters CPU
+At time 4491, process 84 enters system
+At time 4498, process 80 exits CPU
+At time 4498, process 81 enters CPU
+At time 4511, process 67 finishes on DISK 1
+At time 4511, process 69 begins I/O on Disk 1
+At time 4520, process 81 exits CPU
+At time 4520, process 82 enters CPU
+At time 4525, process 70 finishes on Disk 2
+At time 4525, process 71 begins I/O on Disk 2
+At time 4550, process 82 exits CPU
+At time 4550, process 83 enters CPU
+At time 4571, process 85 enters system
+At time 4571, process 86 enters system
+At time 4592, process 69 finishes on DISK 1
+At time 4592, process 72 begins I/O on Disk 1
+At time 4639, process 83 exits CPU
+At time 4639, process 84 enters CPU
+At time 4662, process 87 enters system
+At time 4667, process 84 exits CPU
+At time 4667, process 85 enters CPU
+At time 4671, process 85 exits CPU
+At time 4671, process 86 enters CPU
+At time 4692, process 71 finishes on Disk 2
+At time 4692, process 74 begins I/O on Disk 2
+At time 4712, process 86 exits CPU
+At time 4712, process 87 enters CPU
+At time 4715, process 88 enters system
+At time 4720, process 89 enters system
+At time 4735, process 87 exits CPU
+At time 4735, process 88 enters CPU
+At time 4745, process 74 finishes on Disk 2
+At time 4745, process 75 begins I/O on Disk 2
+At time 4767, process 75 finishes on Disk 2
+At time 4767, process 76 begins I/O on Disk 2
+At time 4775, process 90 enters system
+At time 4811, process 72 finishes on DISK 1
+At time 4811, process 73 begins I/O on Disk 1
+At time 4813, process 88 exits CPU
+At time 4813, process 89 enters CPU
+At time 4836, process 91 enters system
+At time 4851, process 89 exits CPU
+At time 4851, process 90 enters CPU
+At time 4914, process 90 exits CPU
+At time 4914, process 91 enters CPU
+At time 4926, process 92 enters system
+At time 4958, process 76 finishes on Disk 2
+At time 4958, process 77 begins I/O on Disk 2
+At time 4962, process 93 enters system
+At time 4989, process 73 finishes on DISK 1
+At time 4989, process 78 begins I/O on Disk 1
+At time 5006, process 91 exits CPU
+At time 5006, process 92 enters CPU
+At time 5023, process 78 finishes on DISK 1
+At time 5023, process 79 begins I/O on Disk 1
+At time 5026, process 79 finishes on DISK 1
+At time 5026, process 81 begins I/O on Disk 1
+At time 5046, process 94 enters system
+At time 5077, process 81 finishes on DISK 1
+At time 5077, process 83 begins I/O on Disk 1
+At time 5081, process 92 exits CPU
+At time 5081, process 93 enters CPU
+At time 5082, process 95 enters system
+At time 5085, process 93 exits CPU
+At time 5085, process 96 enters system
+At time 5085, process 94 enters CPU
+At time 5100, process 77 finishes on Disk 2
+At time 5100, process 80 begins I/O on Disk 2
+At time 5111, process 83 finishes on DISK 1
+At time 5111, process 84 begins I/O on Disk 1
+At time 5115, process 80 finishes on Disk 2
+At time 5115, process 82 begins I/O on Disk 2
+At time 5118, process 84 finishes on DISK 1
+At time 5118, process 87 begins I/O on Disk 1
+At time 5126, process 97 enters system
+At time 5131, process 98 enters system
+At time 5145, process 94 exits CPU
+At time 5145, process 95 enters CPU
+At time 5200, process 99 enters system
+At time 5207, process 82 finishes on Disk 2
+At time 5207, process 85 begins I/O on Disk 2
+At time 5251, process 95 exits CPU
+At time 5251, process 96 enters CPU
+At time 5257, process 100 enters system
+At time 5268, process 101 enters system
+At time 5299, process 102 enters system
+At time 5319, process 87 finishes on DISK 1
+At time 5319, process 90 begins I/O on Disk 1
+At time 5326, process 85 finishes on Disk 2
+At time 5326, process 86 begins I/O on Disk 2
+At time 5331, process 103 enters system
+At time 5336, process 90 finishes on DISK 1
+At time 5336, process 92 begins I/O on Disk 1
+At time 5357, process 96 exits CPU
+At time 5357, process 97 enters CPU
+At time 5397, process 104 enters system
+At time 5430, process 86 finishes on Disk 2
+At time 5430, process 88 begins I/O on Disk 2
+At time 5431, process 88 finishes on Disk 2
+At time 5431, process 89 begins I/O on Disk 2
+At time 5446, process 97 exits CPU
+At time 5446, process 98 enters CPU
+At time 5447, process 92 finishes on DISK 1
+At time 5447, process 93 begins I/O on Disk 1
+At time 5454, process 98 exits CPU
+At time 5454, process 99 enters CPU
+At time 5457, process 89 finishes on Disk 2
+At time 5457, process 91 begins I/O on Disk 2
+At time 5459, process 99 exits CPU
+At time 5459, process 100 enters CPU
+At time 5469, process 105 enters system
+At time 5488, process 100 exits CPU
+At time 5488, process 101 enters CPU
+At time 5497, process 101 exits CPU
+At time 5497, process 102 enters CPU
+At time 5509, process 106 enters system
+At time 5514, process 107 enters system
+At time 5520, process 108 enters system
+At time 5527, process 91 finishes on Disk 2
+At time 5527, process 95 begins I/O on Disk 2
+At time 5547, process 102 exits CPU
+At time 5547, process 103 enters CPU
+At time 5551, process 109 enters system
+At time 5568, process 95 finishes on Disk 2
+At time 5568, process 97 begins I/O on Disk 2
+At time 5604, process 97 finishes on Disk 2
+At time 5604, process 99 begins I/O on Disk 2
+At time 5605, process 110 enters system
+At time 5625, process 93 finishes on DISK 1
+At time 5625, process 94 begins I/O on Disk 1
+At time 5637, process 94 finishes on DISK 1
+At time 5637, process 96 begins I/O on Disk 1
+At time 5642, process 103 exits CPU
+At time 5642, process 104 enters CPU
+At time 5643, process 111 enters system
+At time 5661, process 99 finishes on Disk 2
+At time 5661, process 100 begins I/O on Disk 2
+At time 5674, process 104 exits CPU
+At time 5674, process 105 enters CPU
+At time 5680, process 112 enters system
+At time 5713, process 96 finishes on DISK 1
+At time 5713, process 98 begins I/O on Disk 1
+At time 5723, process 105 exits CPU
+At time 5723, process 106 enters CPU
+At time 5737, process 113 enters system
+At time 5739, process 114 enters system
+At time 5807, process 98 finishes on DISK 1
+At time 5807, process 101 begins I/O on Disk 1
+At time 5814, process 106 exits CPU
+At time 5814, process 107 enters CPU
+At time 5834, process 115 enters system
+At time 5857, process 100 finishes on Disk 2
+At time 5857, process 102 begins I/O on Disk 2
+At time 5876, process 101 finishes on DISK 1
+At time 5876, process 105 begins I/O on Disk 1
+At time 5888, process 102 finishes on Disk 2
+At time 5888, process 103 begins I/O on Disk 2
+At time 5898, process 107 exits CPU
+At time 5898, process 108 enters CPU
+At time 5925, process 116 enters system
+At time 5926, process 117 enters system
+At time 5960, process 105 finishes on DISK 1
+At time 5960, process 106 begins I/O on Disk 1
+At time 5972, process 108 exits CPU
+At time 5972, process 109 enters CPU
+At time 5997, process 118 enters system
+At time 6042, process 106 finishes on DISK 1
+At time 6042, process 108 begins I/O on Disk 1
+At time 6053, process 109 exits CPU
+At time 6053, process 110 enters CPU
+At time 6057, process 119 enters system
+At time 6057, process 110 exits CPU
+At time 6057, process 111 enters CPU
+At time 6075, process 108 finishes on DISK 1
+At time 6075, process 109 begins I/O on Disk 1
+At time 6115, process 103 finishes on Disk 2
+At time 6115, process 109 finishes on DISK 1
+At time 6115, process 104 begins I/O on Disk 2
+At time 6115, process 110 begins I/O on Disk 1
+At time 6120, process 120 enters system
+At time 6127, process 111 exits CPU
+At time 6127, process 112 enters CPU
+At time 6207, process 121 enters system
+At time 6236, process 112 exits CPU
+At time 6236, process 113 enters CPU
+At time 6285, process 104 finishes on Disk 2
+At time 6285, process 107 begins I/O on Disk 2
+At time 6295, process 122 enters system
+At time 6312, process 110 finishes on DISK 1
+At time 6312, process 113 exits CPU
+At time 6312, process 111 begins I/O on Disk 1
+At time 6312, process 114 enters CPU
+At time 6312, process 113 begins I/O on Disk 1
+At time 6313, process 113 finishes on DISK 1
+At time 6341, process 107 finishes on Disk 2
+At time 6341, process 112 begins I/O on Disk 2
+At time 6342, process 123 enters system
+At time 6383, process 124 enters system
+At time 6395, process 114 exits CPU
+At time 6395, process 115 enters CPU
+At time 6395, process 114 begins I/O on Disk 1
+At time 6454, process 111 finishes on DISK 1
+At time 6456, process 114 finishes on DISK 1
+At time 6478, process 125 enters system
+At time 6489, process 115 exits CPU
+At time 6489, process 116 enters CPU
+At time 6489, process 115 begins I/O on Disk 1
+At time 6498, process 116 exits CPU
+At time 6498, process 117 enters CPU
+At time 6523, process 117 exits CPU
+At time 6523, process 118 enters CPU
+At time 6528, process 115 finishes on DISK 1
+At time 6528, process 117 begins I/O on Disk 1
+At time 6534, process 126 enters system
+At time 6567, process 127 enters system
+At time 6577, process 112 finishes on Disk 2
+At time 6577, process 116 begins I/O on Disk 2
+At time 6580, process 128 enters system
+At time 6624, process 118 exits CPU
+At time 6624, process 119 enters CPU
+At time 6636, process 119 exits CPU
+At time 6636, process 120 enters CPU
+At time 6641, process 129 enters system
+At time 6683, process 130 enters system
+At time 6699, process 116 finishes on Disk 2
+At time 6699, process 118 begins I/O on Disk 2
+At time 6722, process 120 exits CPU
+At time 6722, process 121 enters CPU
+At time 6734, process 117 finishes on DISK 1
+At time 6734, process 119 begins I/O on Disk 1
+At time 6742, process 121 exits CPU
+At time 6742, process 122 enters CPU
+At time 6743, process 131 enters system
+At time 6749, process 122 exits CPU
+At time 6749, process 123 enters CPU
+At time 6749, process 123 exits CPU
+At time 6749, process 124 enters CPU
+At time 6773, process 132 enters system
+At time 6783, process 118 finishes on Disk 2
+At time 6783, process 120 begins I/O on Disk 2
+At time 6798, process 133 enters system
+At time 6817, process 119 finishes on DISK 1
+At time 6817, process 121 begins I/O on Disk 1
+At time 6818, process 124 exits CPU
+At time 6818, process 125 enters CPU
+At time 6836, process 134 enters system
+At time 6864, process 135 enters system
+At time 6882, process 121 finishes on DISK 1
+At time 6882, process 123 begins I/O on Disk 1
+At time 6894, process 120 finishes on Disk 2
+At time 6894, process 125 exits CPU
+At time 6894, process 122 begins I/O on Disk 2
+At time 6894, process 126 enters CPU
+At time 6920, process 123 finishes on DISK 1
+At time 6920, process 125 begins I/O on Disk 1
+At time 6932, process 122 finishes on Disk 2
+At time 6932, process 124 begins I/O on Disk 2
+At time 6933, process 136 enters system
+At time 6962, process 126 exits CPU
+At time 6962, process 127 enters CPU
+At time 6975, process 137 enters system
+At time 7015, process 127 exits CPU
+At time 7015, process 128 enters CPU
+At time 7053, process 124 finishes on Disk 2
+At time 7053, process 126 begins I/O on Disk 2
+At time 7059, process 138 enters system
+At time 7083, process 125 finishes on DISK 1
+At time 7083, process 127 begins I/O on Disk 1
+At time 7109, process 126 finishes on Disk 2
+At time 7119, process 139 enters system
+At time 7120, process 140 enters system
+At time 7124, process 128 exits CPU
+At time 7124, process 129 enters CPU
+At time 7124, process 128 begins I/O on Disk 2
+At time 7142, process 129 exits CPU
+At time 7142, process 130 enters CPU
+At time 7146, process 130 exits CPU
+At time 7146, process 131 enters CPU
+At time 7191, process 141 enters system
+At time 7203, process 131 exits CPU
+At time 7203, process 132 enters CPU
+At time 7250, process 142 enters system
+At time 7277, process 132 exits CPU
+At time 7277, process 133 enters CPU
+At time 7282, process 127 finishes on DISK 1
+At time 7282, process 130 begins I/O on Disk 1
+At time 7286, process 133 exits CPU
+At time 7286, process 134 enters CPU
+At time 7287, process 143 enters system
+At time 7336, process 144 enters system
+At time 7348, process 128 finishes on Disk 2
+At time 7348, process 129 begins I/O on Disk 2
+At time 7350, process 134 exits CPU
+At time 7350, process 135 enters CPU
+At time 7355, process 135 exits CPU
+At time 7355, process 136 enters CPU
+At time 7378, process 136 exits CPU
+At time 7378, process 137 enters CPU
+At time 7382, process 145 enters system
+At time 7407, process 130 finishes on DISK 1
+At time 7407, process 132 begins I/O on Disk 1
+At time 7430, process 129 finishes on Disk 2
+At time 7430, process 131 begins I/O on Disk 2
+At time 7463, process 146 enters system
+At time 7478, process 137 exits CPU
+At time 7478, process 138 enters CPU
+At time 7516, process 147 enters system
+At time 7532, process 138 exits CPU
+At time 7532, process 139 enters CPU
+At time 7545, process 148 enters system
+At time 7547, process 132 finishes on DISK 1
+At time 7547, process 133 begins I/O on Disk 1
+At time 7563, process 149 enters system
+At time 7573, process 139 exits CPU
+At time 7573, process 140 enters CPU
+At time 7585, process 150 enters system
+At time 7627, process 140 exits CPU
+At time 7627, process 141 enters CPU
+At time 7632, process 141 exits CPU
+At time 7632, process 142 enters CPU
+At time 7633, process 131 finishes on Disk 2
+At time 7633, process 134 begins I/O on Disk 2
+At time 7640, process 151 enters system
+At time 7647, process 133 finishes on DISK 1
+At time 7647, process 136 begins I/O on Disk 1
+At time 7721, process 152 enters system
+At time 7725, process 142 exits CPU
+At time 7725, process 143 enters CPU
+At time 7808, process 153 enters system
+At time 7810, process 154 enters system
+At time 7821, process 143 exits CPU
+At time 7821, process 144 enters CPU
+At time 7844, process 134 finishes on Disk 2
+At time 7844, process 135 begins I/O on Disk 2
+At time 7845, process 136 finishes on DISK 1
+At time 7845, process 138 begins I/O on Disk 1
+At time 7871, process 155 enters system
+At time 7895, process 144 exits CPU
+At time 7895, process 145 enters CPU
+At time 7925, process 156 enters system
+At time 7927, process 157 enters system
+At time 7968, process 158 enters system
+At time 7974, process 135 finishes on Disk 2
+At time 7974, process 137 begins I/O on Disk 2
+At time 7988, process 145 exits CPU
+At time 7988, process 146 enters CPU
+At time 8015, process 146 exits CPU
+At time 8015, process 147 enters CPU
+At time 8035, process 137 finishes on Disk 2
+At time 8035, process 140 begins I/O on Disk 2
+At time 8047, process 159 enters system
+At time 8070, process 138 finishes on DISK 1
+At time 8070, process 139 begins I/O on Disk 1
+At time 8077, process 160 enters system
+At time 8120, process 161 enters system
+At time 8122, process 147 exits CPU
+At time 8122, process 148 enters CPU
+At time 8127, process 162 enters system
+At time 8179, process 148 exits CPU
+At time 8179, process 149 enters CPU
+At time 8181, process 149 exits CPU
+At time 8181, process 150 enters CPU
+At time 8216, process 163 enters system
+At time 8226, process 139 finishes on DISK 1
+At time 8226, process 141 begins I/O on Disk 1
+At time 8231, process 140 finishes on Disk 2
+At time 8231, process 142 begins I/O on Disk 2
+At time 8247, process 150 exits CPU
+At time 8247, process 151 enters CPU
+At time 8247, process 150 contacts the network
+At time 8254, process 164 enters system
+At time 8298, process 151 exits CPU
+At time 8298, process 152 enters CPU
+At time 8312, process 165 enters system
+At time 8318, process 142 finishes on Disk 2
+At time 8318, process 144 begins I/O on Disk 2
+At time 8381, process 152 exits CPU
+At time 8381, process 153 enters CPU
+At time 8403, process 166 enters system
+At time 8422, process 141 finishes on DISK 1
+At time 8422, process 143 begins I/O on Disk 1
+At time 8423, process 153 exits CPU
+At time 8423, process 154 enters CPU
+At time 8479, process 144 finishes on Disk 2
+At time 8479, process 145 begins I/O on Disk 2
+At time 8492, process 167 enters system
+At time 8516, process 168 enters system
+At time 8517, process 154 exits CPU
+At time 8517, process 155 enters CPU
+At time 8533, process 143 finishes on DISK 1
+At time 8533, process 146 begins I/O on Disk 1
+At time 8537, process 169 enters system
+At time 8567, process 170 enters system
+At time 8577, process 146 finishes on DISK 1
+At time 8577, process 148 begins I/O on Disk 1
+At time 8620, process 155 exits CPU
+At time 8620, process 156 enters CPU
+At time 8623, process 148 finishes on DISK 1
+At time 8623, process 151 begins I/O on Disk 1
+At time 8635, process 145 finishes on Disk 2
+At time 8635, process 147 begins I/O on Disk 2
+At time 8636, process 171 enters system
+At time 8646, process 172 enters system
+At time 8658, process 156 exits CPU
+At time 8658, process 157 enters CPU
+At time 8674, process 173 enters system
+At time 8678, process 147 finishes on Disk 2
+At time 8678, process 149 begins I/O on Disk 2
+At time 8694, process 174 enters system
+At time 8745, process 157 exits CPU
+At time 8745, process 158 enters CPU
+At time 8754, process 175 enters system
+At time 8757, process 151 finishes on DISK 1
+At time 8757, process 153 begins I/O on Disk 1
+At time 8760, process 153 finishes on DISK 1
+At time 8760, process 155 begins I/O on Disk 1
+At time 8765, process 176 enters system
+At time 8845, process 158 exits CPU
+At time 8845, process 159 enters CPU
+At time 8853, process 177 enters system
+At time 8870, process 149 finishes on Disk 2
+At time 8870, process 152 begins I/O on Disk 2
+At time 8876, process 178 enters system
+At time 8886, process 155 finishes on DISK 1
+At time 8886, process 156 begins I/O on Disk 1
+At time 8888, process 159 exits CPU
+At time 8888, process 160 enters CPU
+At time 8906, process 179 enters system
+At time 8938, process 152 finishes on Disk 2
+At time 8938, process 154 begins I/O on Disk 2
+At time 8947, process 160 exits CPU
+At time 8947, process 161 enters CPU
+At time 8963, process 161 exits CPU
+At time 8963, process 162 enters CPU
+At time 8965, process 150 finishes with network
+At time 8967, process 156 finishes on DISK 1
+At time 8967, process 158 begins I/O on Disk 1
+At time 8980, process 180 enters system
+At time 9017, process 154 finishes on Disk 2
+At time 9017, process 157 begins I/O on Disk 2
+At time 9017, process 157 finishes on Disk 2
+At time 9017, process 160 begins I/O on Disk 2
+At time 9021, process 160 finishes on Disk 2
+At time 9021, process 161 begins I/O on Disk 2
+At time 9022, process 162 exits CPU
+At time 9022, process 163 enters CPU
+At time 9029, process 158 finishes on DISK 1
+At time 9029, process 159 begins I/O on Disk 1
+At time 9040, process 181 enters system
+At time 9046, process 159 finishes on DISK 1
+At time 9046, process 182 enters system
+At time 9103, process 163 exits CPU
+At time 9103, process 164 enters CPU
+At time 9103, process 163 begins I/O on Disk 1
+At time 9112, process 183 enters system
+At time 9113, process 164 exits CPU
+At time 9113, process 165 enters CPU
+At time 9140, process 165 exits CPU
+At time 9140, process 166 enters CPU
+At time 9165, process 163 finishes on DISK 1
+At time 9165, process 164 begins I/O on Disk 1
+At time 9184, process 184 enters system
+At time 9192, process 164 finishes on DISK 1
+At time 9198, process 166 exits CPU
+At time 9198, process 167 enters CPU
+At time 9198, process 166 begins I/O on Disk 1
+At time 9219, process 185 enters system
+At time 9225, process 161 finishes on Disk 2
+At time 9225, process 167 exits CPU
+At time 9225, process 162 begins I/O on Disk 2
+At time 9225, process 168 enters CPU
+At time 9251, process 186 enters system
+At time 9265, process 168 exits CPU
+At time 9265, process 169 enters CPU
+At time 9267, process 169 exits CPU
+At time 9267, process 170 enters CPU
+At time 9283, process 170 exits CPU
+At time 9283, process 171 enters CPU
+At time 9291, process 162 finishes on Disk 2
+At time 9291, process 165 begins I/O on Disk 2
+At time 9311, process 187 enters system
+At time 9314, process 166 finishes on DISK 1
+At time 9314, process 167 begins I/O on Disk 1
+At time 9367, process 171 exits CPU
+At time 9367, process 188 enters system
+At time 9367, process 172 enters CPU
+At time 9370, process 172 exits CPU
+At time 9370, process 173 enters CPU
+At time 9371, process 173 exits CPU
+At time 9371, process 174 enters CPU
+At time 9374, process 189 enters system
+At time 9439, process 190 enters system
+At time 9446, process 174 exits CPU
+At time 9446, process 175 enters CPU
+At time 9451, process 165 finishes on Disk 2
+At time 9451, process 168 begins I/O on Disk 2
+At time 9471, process 191 enters system
+At time 9476, process 167 finishes on DISK 1
+At time 9476, process 169 begins I/O on Disk 1
+At time 9479, process 192 enters system
+At time 9547, process 175 exits CPU
+At time 9547, process 176 enters CPU
+At time 9570, process 193 enters system
+At time 9571, process 169 finishes on DISK 1
+At time 9571, process 171 begins I/O on Disk 1
+At time 9605, process 194 enters system
+At time 9611, process 168 finishes on Disk 2
+At time 9611, process 170 begins I/O on Disk 2
+At time 9644, process 176 exits CPU
+At time 9644, process 177 enters CPU
+At time 9648, process 177 exits CPU
+At time 9648, process 178 enters CPU
+At time 9660, process 170 finishes on Disk 2
+At time 9660, process 172 begins I/O on Disk 2
+At time 9678, process 178 exits CPU
+At time 9678, process 179 enters CPU
+At time 9683, process 179 exits CPU
+At time 9683, process 180 enters CPU
+At time 9686, process 195 enters system
+At time 9700, process 172 finishes on Disk 2
+At time 9700, process 174 begins I/O on Disk 2
+At time 9701, process 196 enters system
+At time 9709, process 180 exits CPU
+At time 9709, process 181 enters CPU
+At time 9724, process 181 exits CPU
+At time 9724, process 182 enters CPU
+At time 9739, process 174 finishes on Disk 2
+At time 9739, process 176 begins I/O on Disk 2
+At time 9741, process 197 enters system
+At time 9747, process 171 finishes on DISK 1
+At time 9747, process 173 begins I/O on Disk 1
+At time 9754, process 182 exits CPU
+At time 9754, process 183 enters CPU
+At time 9793, process 198 enters system
+At time 9796, process 199 enters system
+At time 9808, process 173 finishes on DISK 1
+At time 9808, process 175 begins I/O on Disk 1
+At time 9815, process 183 exits CPU
+At time 9815, process 184 enters CPU
+At time 9843, process 175 finishes on DISK 1
+At time 9843, process 177 begins I/O on Disk 1
+At time 9850, process 200 enters system
+At time 9862, process 176 finishes on Disk 2
+At time 9862, process 178 begins I/O on Disk 2
+At time 9864, process 201 enters system
+At time 9890, process 184 exits CPU
+At time 9890, process 185 enters CPU
+At time 9914, process 202 enters system
+At time 9926, process 178 finishes on Disk 2
+At time 9926, process 179 begins I/O on Disk 2
+At time 9946, process 185 exits CPU
+At time 9946, process 186 enters CPU
+At time 9964, process 203 enters system
+At time 9993, process 186 exits CPU
+At time 9993, process 187 enters CPU
+At time 10000, process 100000 closes the program
