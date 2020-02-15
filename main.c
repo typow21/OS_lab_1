@@ -56,23 +56,71 @@ void finishDisk1(struct event *event, struct queue *queue);
 void finishDisk2(struct event *event, struct queue *queue);
 void arriveNetwork(struct event *event, struct queue *queue);
 void finishNetwork(struct event *event, struct queue *queue);
+void statistics();
 
 //global variables
-int eventid = 0; //incremented when event is created
+int eventid = 1; //incremented when event is created
 int clock = 0; //is this even needed?
 bool cpuOccupied = false;
 bool disk1Occupied = false;
 bool disk2Occupied = false;
 bool networkOccupied = false;
 char *types[13] = {"enters system", "enters CPU", "exits CPU", "exits the system", 
-                    "begins I/O on Disk 1", "begins I/O on Disk 2","finishes on DISK 1", "finishes on Disk 1",
+                    "begins I/O on Disk 1", "begins I/O on Disk 2","finishes on DISK 1", "finishes on Disk 2",
                     "contacts the network", "finishes with network", "closes the program"};
 // is time real?
- int count = 0;
-int totalCPU = 0;
-int totalDisk1 = 0;
-int totalDisk2 = 0;
-int totalNetwok = 0;
+
+//stats file variables
+
+    //queues
+    int count = 0;
+    double totalCPU = 0;
+    int maxCPU = 0;
+    double totalDisk1 = 0;
+    int maxDisk1 = 0;
+    double totalDisk2 = 0;
+    int maxDisk2 = 0;
+    double totalNetwork = 0;
+    int maxNetwork = 0;
+
+    //Utilization
+    int cpuTimeIn = 0;
+    int cpuTimeOut = 0;
+    int cpuTotal = 0;
+
+    int disk1TimeIn = 0;
+    int disk1TimeOut = 0;
+    int disk1Total = 0;
+
+    int disk2TimeIn = 0;
+    int disk2TimeOut = 0;
+    int disk2Total = 0;
+
+    int networkTimeIn = 0;
+    int networkTimeOut = 0;
+    int networkTotal = 0;
+
+    //Response Time
+    int cpuCount = 0;
+    int cpuSum = 0;
+    int cpuMax = 0;
+    double cpuAvg = 0;
+
+    int disk1count = 0;
+    int disk1sum = 0;
+    int disk1max = 0;
+    double disk1Avg = 0 ;
+
+    int disk2count = 0;
+    int disk2sum =0;
+    int disk2max = 0;
+    double disk2Avg = 0;
+
+    int networkCount = 0;
+    int networkSum = 0;
+    int networkMax = 0;
+    double networkAvg = 0;
+
 
 //methods
 void initConfigFile();
@@ -84,10 +132,6 @@ void push(struct event *event, struct queue *que);
 struct event pop(struct queue *que);
 void sortEventQueue(struct queue *que);
 void swap(struct event *first, struct event *second);
-
-// void push(struct Event queue[], struct Event *newEvent); //what if the stuct that I pass is dynamic?
-// struct Event pop(struct Event *queue);
-
 int randomNumberGenerator();
 int getTime();
 
@@ -98,58 +142,57 @@ struct queue disk2Queue;
 struct queue networkQueue;
 
 int main(int argc, char* argv[]){
+    FILE *file = fopen("Log.txt","w");
     struct queue eventQueue;
     initQueue(&eventQueue);
+    initQueue(&cpuQueue);
     // printf("Main: Size of queue: %lu\n", sizeof(event));
 
+    //load global vari from file 
     initConfigFile();
     srand(config.SEED); //random seed
 
+    //first event 
     struct event *startEvent;
     startEvent = malloc(sizeof(struct event));
-    // initEvent(startEvent, &eventQueue);
     startEvent->Time = config.INIT_TIME;
     startEvent->eventType = ARRIVAL;
     startEvent->ProcessID = 0;
-    eventid++;
     push(startEvent, &eventQueue);
 
+    //last event
     struct event *finishEvent;
     finishEvent = malloc(sizeof(struct event));
-    // initEvent(finishEvent, &eventQueue);
     finishEvent->Time = config.FIN_TIME;
     finishEvent->eventType = FINISH;
     finishEvent->ProcessID = 100000;
     push(finishEvent, &eventQueue);
     
     while(isEmpty(&eventQueue) != 1){
-        sortEventQueue(&eventQueue);
+        sortEventQueue(&eventQueue); //sorts priority queue
 
-        if(cpuQueue.count>0){
-            struct event curr = *cpuQueue.head;
-            while(true){
-                // printf("\n####ARRIVAL : CPU Queue check: Event ID: %d |Event Time: %d | Event Type: %s####\n", 
-                //                     curr.ProcessID, curr.Time, types[curr.eventType]);
-                if(curr.next == NULL){
-                    break;
-                }
-                curr = *curr.next;
-            }
-        }
-
-        struct event *curr = eventQueue.head;
-        while(true){
-        // printf("\nMain loop: Queue check: Current ID: %d | Time: %d | Type: %s\n",
-        //                                 curr->ProcessID, curr->Time, types[curr->eventType]);
-        if(curr->next == NULL){
-            break;
-        }
-        curr = curr->next;
-        }
-        // printf("\n");
         struct event popEvent = pop(&eventQueue);
-        printf("At time %d, process %d %s\n", 
-                            popEvent.Time, popEvent.ProcessID, types[popEvent.eventType]);
+        fprintf(file, "At time %d, process %d %s\n", 
+                    popEvent.Time, popEvent.ProcessID, types[popEvent.eventType]); 
+        // printf("At time %d, process %d %s\n", 
+        //             popEvent.Time, popEvent.ProcessID, types[popEvent.eventType]); 
+        totalCPU += cpuQueue.count;
+        if(cpuQueue.count > maxCPU){
+            maxCPU = cpuQueue.count;
+        }
+        totalDisk1 += disk1Queue.count;
+        if(disk1Queue.count > maxDisk1){
+            maxDisk1 = disk1Queue.count;
+        }
+        totalDisk2 += disk2Queue.count;
+        if(disk2Queue.count > maxDisk2){
+            maxDisk2 = disk2Queue.count;
+        }
+        totalNetwork += networkQueue.count;
+        if(networkQueue.count > maxNetwork){
+            maxNetwork = networkQueue.count;
+        }
+        count++;
         switch(popEvent.eventType){
             case ARRIVAL:
                 jobArrival(&popEvent, &eventQueue);
@@ -183,15 +226,12 @@ int main(int argc, char* argv[]){
                 break;
             case FINISH:
                 // printf("Program finished");
+                statistics();
                 exit(0);
                 break;
         }
-        totalCPU += cpuQueue.count;
-        totalDisk1 += disk1Queue.count;
-        totalDisk2 += disk2Queue.count;
-        totalNetwork += networkQueue.count;
-        count++;
     }
+    count++;
     //Tests below
     {
         // struct event *head = eventQueue.head;
@@ -226,149 +266,135 @@ int main(int argc, char* argv[]){
         // printf("Main: Tail prev(test): %d\n", eventQueue.tail->prev->ProcessID);
         // printf("Main: Tail prev next(test): %d\n", eventQueue.tail->prev->next->ProcessID);
     }
-    statistics();
+    fclose(file);
 }
+
+void statistics(){
+    FILE *file = fopen("STAT.txt","w");
+    fprintf(file, "----------Queues----------\n");
+    fprintf(file, "Average size of CPU Queue: %f\n", totalCPU/count);
+    fprintf(file, "Max size of Queue: %d\n", maxCPU);
+    fprintf(file, "Average size of Disk 1 Queue: %f\n", totalDisk1/count);
+    fprintf(file, "Max size of Disk 1 Queue: %d\n",maxDisk1);
+    fprintf(file, "Average size of Disk 2 Queue: %f\n", totalDisk2/count);
+    fprintf(file, "Max size of Disk 2 Queue: %d\n",maxDisk2);
+    fprintf(file, "Average size of Network Queue: %f\n", totalNetwork/count);
+    fprintf(file, "Max size of Network Queue: %d\n",maxNetwork);
+    fprintf(file, "\n");
+
+    fprintf(file, "----------Utilization----------\n");
+    //cpuTotal is  cpuTotal += newEvent->Time - popEvent->Time and is done in cpu Arrive
+        //counts how long the cpu is used throughout the program 
+    fprintf(file, "Utilization of CPU: %f\n", (double)cpuTotal/(double)config.FIN_TIME - config.INIT_TIME);
+    
+    fprintf(file, "Utilization of Disk1: %f\n", (double)disk1Total/(double)config.FIN_TIME - config.INIT_TIME);
+    
+    fprintf(file, "Utilization of Disk 2: %f\n", (double)disk2Total/(double)config.FIN_TIME - config.INIT_TIME);
+
+    fprintf(file, "Utilization of network: %f\n", (double)networkTotal/(double)config.FIN_TIME - config.INIT_TIME);
+    
+    fprintf(file, "\n");
+
+    fprintf(file, "----------Response Time----------\n");
+    fprintf(file, "CPU max response time: %d\n", cpuMax);
+    fprintf(file, "DISK 1 max response time: %d\n",disk1max);
+    fprintf(file, "DISK 2 max response time: %d\n", disk2max);
+    fprintf(file, "NETWORK max response time: %d\n", networkMax);
+    fprintf(file, "CPU average response time: %f\n", (double)cpuTotal/(double)cpuCount);
+    fprintf(file, "DISK 1 average response time: %f\n", (double)disk1Total/(double)disk1count);
+    fprintf(file, "DISK 2 average response time: %f\n", (double)disk2Total/(double)disk2count);
+    fprintf(file, "NETWORK average response time: %f\n", (double)networkTotal/(double)networkCount);
+    fprintf(file, "\n");
+
+    fprintf(file, "----------Throughput----------\n");
+    double throughCpu = (double)cpuCount/(double)config.FIN_TIME;
+    fprintf(file, "Throughput of CPU: %f\n", throughCpu);
+    double throughDisk1 = (double)disk1count/(double)config.FIN_TIME;
+    fprintf(file, "Throughput of DISK 1: %f\n", throughDisk1);
+    double throughDisk2 = (double)disk2count/(double)config.FIN_TIME;
+    fprintf(file, "Throughput of DISK 2: %f\n", throughDisk2);
+    double throughNetwork = (double)networkCount/(double)config.FIN_TIME;
+    fprintf(file, "Throughput of NETWORK: %f\n", throughNetwork);
+    fclose(file);
+}
+
 //Done needs more testing
 void jobArrival(struct event *popEvent, struct queue *currQueue){
     // printf("Job arrival: CALLLED\n");
+    //checked works
     struct event *newEvent2;
     newEvent2 = malloc(sizeof(event));
-    newEvent2->eventType = ARRIVAL;
+    newEvent2->eventType = ARRIVAL; 
     newEvent2->ProcessID = eventid;
     eventid++;
-    newEvent2->Time = getTime(config.ARRIVE_MIN, config.ARRIVE_MAX)+popEvent->Time;//getTime(config.ARRIVE_CPU, config.FINISH_CPU); //time is fucking up??
+    newEvent2->Time = getTime(config.ARRIVE_MIN, config.ARRIVE_MAX)+popEvent->Time;
+    // newEvent2->Time = 80 + popEvent->Time;
+    // printf("Time: %d\n", newEvent2->Time - popEvent->Time);
+    // printf("Time: %d\n", getTime(config.ARRIVE_MIN, config.ARRIVE_MAX));
     push(newEvent2, currQueue);
-    if(cpuOccupied ==false && cpuQueue.count == 0){ //works
+
+    if(cpuOccupied == true || cpuQueue.count > 0){
+        struct event *newEvent;
+        newEvent = malloc(sizeof(event));
+        newEvent->Time = popEvent->Time;
+        newEvent->eventType = ARRIVAL;
+        newEvent->ProcessID = popEvent->ProcessID;
+        // printf("\nReached\n");
+        push(newEvent, &cpuQueue);
+    }else{
         struct event *newEvent;
         newEvent = malloc(sizeof(event));
         newEvent->Time = popEvent->Time;
         newEvent->ProcessID = popEvent->ProcessID;
-        // printf("Job arrival: newEvent Time: %d | newEvent Process ID: %d\n",newEvent->Time, newEvent->ProcessID);
         newEvent->eventType = ARRIVE_CPU;
         push(newEvent, currQueue);
-        cpuOccupied = true;
     }
-    else if(cpuOccupied == false && cpuQueue.count == 0){
-            struct event *newEvent;
-            newEvent = malloc(sizeof(event));
-            newEvent->Time = popEvent->Time;
-            newEvent->eventType = ARRIVAL;
-            newEvent->ProcessID = cpuQueue.head->ProcessID;
-            push(newEvent, &cpuQueue);
-    }
-
-    //Dead code
-    {
-            // if(cpuOccupied == false && cpuQueue.count == 0){ //works
-            //     struct event *newEvent;
-            //     newEvent = malloc(sizeof(event));
-            //     newEvent->Time = getTime(config.CPU_MIN, config.CPU_MAX)+popEvent->Time;
-            //     newEvent->ProcessID = popEvent->ProcessID;
-            //     // printf("Job arrival: newEvent Time: %d | newEvent Process ID: %d\n",newEvent->Time, newEvent->ProcessID);
-            //     newEvent->eventType = ARRIVE_CPU;
-            //     push(newEvent, currQueue);
-            //     cpuOccupied = true;
-            // }
-            //     else if(cpuOccupied == true){
-            //     struct event *newEvent;
-            //     newEvent = malloc(sizeof(event));
-            //     newEvent->Time = getTime(config.CPU_MIN, config.CPU_MAX)+popEvent->Time;
-            //     newEvent->ProcessID = popEvent->ProcessID;
-            //     // printf("Job arrival: newEvent Time: %d | newEvent Process ID: %d\n",newEvent->Time, newEvent->ProcessID);
-            //     newEvent->eventType = popEvent->eventType;
-            //     push(newEvent, &cpuQueue);
-            //     // struct event curr = *cpuQueue.head;
-            //     //     while(true){
-            //     //         printf("####ARRIVAL : CPU Queue check: Event ID: %d |Event Time: %d | Event Type: %s####\n", 
-            //     //                             curr.ProcessID, curr.Time, types[curr.eventType]);
-            //     //         if(curr.next == NULL){
-            //     //             break;
-            //     //         }
-            //     //         curr = *curr.next;
-            //     //     }
-            //     }
-            //     else if(cpuOccupied == false && cpuQueue.count != 0){
-            //             printf("Popping events \n");
-            //             struct event *newEvent;
-            //             newEvent = malloc(sizeof(event));
-            //             newEvent->Time = getTime(config.CPU_MIN, config.CPU_MAX)+popEvent->Time;
-            //             newEvent->eventType = FINISH_CPU;
-            //             newEvent->ProcessID = cpuQueue.head->ProcessID;
-            //             cpuOccupied = true;
-            //             push(newEvent, currQueue);
-            //             struct event blank = pop(&cpuQueue);
-            //     }
-            // struct event *newEvent2;
-            // newEvent2 = malloc(sizeof(event));
-            // newEvent2->eventType = ARRIVAL;
-            // newEvent2->ProcessID = eventid;
-            // eventid++;
-            // newEvent2->Time = getTime(config.ARRIVE_MIN, config.ARRIVE_MAX)+popEvent->Time;//getTime(config.ARRIVE_CPU, config.FINISH_CPU); //time is fucking up??
-            // {
-                // if(cpuOccupied == false){
-                //     newEvent->eventType = ARRIVE_CPU;
-                //     newEvent->Time = event->Time;
-                //     push(event, queue);
-                //     cpuOccupied = true;
-                // }
-                // // printf("this works");
-                // // push(event, &cpuQueue);
-                // // printf("got this far");
-                // // // sortEventQueue(queue);
-                // struct event *newEvent2;
-                // newEvent = malloc(sizeof(event));
-                // initEvent(newEvent2, queue);
-                // push(newEvent2, queue);
-                // sortEventQueue(queue);
-                // tests below
-                // {
-                //     // printf("Job Arrival: New Event:  Event ID: %d |Event Time: %d | Event Type: %s\n", 
-                //     //                         newEvent->ProcessID, newEvent->Time, types[newEvent->eventType]);
-                    
-                //     // printf("Job Arrival: Queue Test: Head(test): %d | %s\n", 
-                //     //                 queue->head->ProcessID, types[queue->head->eventType]);
-                //     // printf("Job Arrival: Queue Test: Head next(test): %d | %s\n", 
-                //     //                 queue->head->next->ProcessID, types[queue->head->next->eventType]);
-                //     // // printf("Job Arrival: Queue Test: Head next next(test): %d | %s\n", 
-                //     // //                 queue->head->next->next->ProcessID, types[queue->head->next->next->eventType]);
-                //     // printf("Job Arrival: Queue Test: Tail(test): %d | %s\n", 
-                //     //                 queue->tail->ProcessID, types[queue->tail->eventType]);
-
-                //     // struct event curr = *queue->head;
-                //     // while(true){
-                //     //     printf("Job Arrival:  Event ID: %d |Event Time: %d | Event Type: %s\n", 
-                //     //                         curr.ProcessID, curr.Time, types[curr.eventType]);
-                //     //     if(curr.next == NULL){
-                //     //         break;
-                //     //     }
-                //     //     curr = *curr.next;
-                //     // }
-                // }
-        }
-    }
+}
 
 void cpuArrive(struct event *popEvent, struct queue *currQueue){
-    struct event *newEvent;
+    struct event *newEvent; 
     newEvent = malloc(sizeof(event));
     newEvent->Time = getTime(config.CPU_MIN, config.CPU_MAX)+popEvent->Time;
+    int cpuTime = newEvent->Time - popEvent->Time;
+    cpuTotal +=  cpuTime;//for stats file
+    if(cpuTime > cpuMax){
+        cpuMax = cpuTime;
+    }
+    cpuCount++;
     newEvent->eventType = FINISH_CPU;
     newEvent->ProcessID = popEvent->ProcessID;
+    cpuOccupied = true;
     push(newEvent, currQueue);
 }
+
 void cpuFinish(struct event *popEvent, struct queue *currQueue){
+    //declaring probabilities
+    cpuOccupied = false;
     double quitProb = config.QUIT_PROB * 100;
-    double networkProb = config.NETWORK_PROB * 100;
     int random = getTime(0, 100);
-    // printf("RANDOM: %f | %d", quitProb, random);
+    int newRandom = getTime(0, (100-quitProb));
+    double networkProb = config.NETWORK_PROB * 100-quitProb;
+    printf("CPU COUNT: %d\n", cpuQueue.count);
+    if(cpuQueue.count > 0){
+        struct event *popCpuEvent;
+        popCpuEvent = malloc(sizeof(event));
+        popCpuEvent->Time =  popEvent->Time;
+        popCpuEvent->eventType = ARRIVE_CPU;
+        popCpuEvent->ProcessID = cpuQueue.head->ProcessID;
+        printf("PID: %d\n", popCpuEvent->ProcessID);
+        push(popCpuEvent, currQueue); 
+        pop(&cpuQueue);
+    }
     if(random <= quitProb){
-        cpuOccupied = false;
+        cpuOccupied = false; 
         struct event *newEvent2;
         newEvent2 = malloc(sizeof(event));
         newEvent2->ProcessID = popEvent->ProcessID;
         newEvent2->eventType = EXIT_SYSTEM; 
         newEvent2->Time = popEvent->Time;
         push(newEvent2, currQueue);
-    }else if(random <= networkProb){
+    }
+    else if(newRandom <= networkProb){
         if(networkQueue.count == 0 && networkOccupied == false){
             cpuOccupied = false;
             struct event *newEvent2;
@@ -378,168 +404,147 @@ void cpuFinish(struct event *popEvent, struct queue *currQueue){
             newEvent2->Time = popEvent->Time;
             networkOccupied = true;
             push(newEvent2, currQueue);
-        }else{
+        }
+        else{
             push(popEvent, &networkQueue);
         }
-    }else{
-        if(disk1Occupied == false){
-            cpuOccupied = false;
+    }
+    else{
+        if(disk1Occupied == false && disk1Queue.count == 0){
+            // printf("\n\nDisk 1 reached\n\n");
             struct event *newEvent2;
             newEvent2 = malloc(sizeof(event));
             newEvent2->ProcessID = popEvent->ProcessID;
             newEvent2->eventType = ARRIVE_DISK1; 
             newEvent2->Time = popEvent->Time;
-            push(newEvent2, currQueue);
-        }else if(disk2Occupied == false){
-            cpuOccupied = false;
-            struct event *newEvent2;
-            newEvent2 = malloc(sizeof(event));
-            newEvent2->ProcessID = popEvent->ProcessID;
-            newEvent2->eventType = ARRIVE_DISK2; 
-            newEvent2->Time = popEvent->Time;
-            push(newEvent2, currQueue);
-        }else if(disk1Queue.count < disk2Queue.count){
-            cpuOccupied = false;
-            struct event *newEvent2;
-            newEvent2 = malloc(sizeof(event));
-            newEvent2->ProcessID = popEvent->ProcessID;
-            newEvent2->eventType = ARRIVE_DISK1; 
-            newEvent2->Time = popEvent->Time;
-            push(newEvent2, currQueue);
-        }else{
-            cpuOccupied = false;
-            struct event *newEvent2;
-            newEvent2 = malloc(sizeof(event));
-            newEvent2->ProcessID = popEvent->ProcessID;
-            newEvent2->eventType = ARRIVE_DISK2; 
-            newEvent2->Time = popEvent->Time;
+            disk1Occupied = true;
             push(newEvent2, currQueue);
         }
-    }
-    if(cpuQueue.count > 0){
-        // printf("This is called but nothing happed?\n");
-        struct event *newEvent;
-        newEvent = malloc(sizeof(event));
-        newEvent->eventType = ARRIVE_CPU;
-        newEvent->Time = cpuQueue.head->Time;
-        newEvent->ProcessID = cpuQueue.head->ProcessID;
-        struct event blank = pop(&cpuQueue);
-        push(newEvent, currQueue);
+        else if(disk2Occupied == false && disk2Queue.count == 0){
+            // printf("\nDisk 2 reached\n\n");
+            struct event *newEvent2;
+            newEvent2 = malloc(sizeof(event));
+            newEvent2->ProcessID = popEvent->ProcessID;
+            newEvent2->eventType = ARRIVE_DISK2; 
+            newEvent2->Time = popEvent->Time;
+            disk2Occupied = true;
+            push(newEvent2, currQueue);
+        }
+        else if(disk1Queue.count < disk2Queue.count){
+            //goes to disk 1 queue
+            // printf("\n\nDisk 1 queue reached\n\n");
+            struct event *newEvent2;
+            newEvent2 = malloc(sizeof(event));
+            newEvent2->ProcessID = popEvent->ProcessID;
+            newEvent2->eventType = popEvent->eventType;
+            newEvent2->Time = popEvent -> Time;
+            push(newEvent2, &disk1Queue);
+        }
+        else{//goes to disk 2 queue
+            struct event *newEvent2;
+            newEvent2 = malloc(sizeof(event));
+            newEvent2->ProcessID = popEvent->ProcessID;
+            newEvent2->eventType = popEvent->eventType;
+            newEvent2->Time = popEvent -> Time;
+            push(newEvent2, &disk2Queue);
+        }
     }
 }
-
-//1 to exit -- 0 to stay
-// int quitProb(){
-//     double quitProb = config.QUIT_PROB;
-//     return 1;
-// }
 
 void exitSystem(struct event *popEvent, struct queue *ueue){
     printf("Exit System works");
 }
+
 void arriveDisk1(struct event *popEvent, struct queue *currQueue){
-    if(disk1Occupied == false && disk1Queue.count == 0 ){
-       struct event *newEvent;
-        newEvent = malloc(sizeof(event));
-       newEvent->eventType = FINISH_DISK1;
-       newEvent->Time = getTime(config.DISK1_MIN, config.DISK1_MAX)+popEvent->Time;
-       newEvent->ProcessID = popEvent->ProcessID;
-       disk1Occupied = true;
-       push(newEvent, currQueue);
-    }else if(disk1Occupied == false && disk1Queue.count > 0){
-        push(popEvent,&disk1Queue);
-        struct event popDiskEvent;
-        popDiskEvent = pop(&disk1Queue);
-        popDiskEvent.eventType = FINISH_DISK1;
-        popDiskEvent.Time = getTime(config.DISK1_MIN, config.DISK1_MAX)+popEvent->Time;
-        push(&popDiskEvent, &disk1Queue);
-        disk1Occupied = true;
-    }
-}
-void arriveDisk2(struct event *popEvent, struct queue *currQueue){
-    if(disk2Occupied == false && disk2Queue.count == 0 ){
-       struct event *newEvent;
-        newEvent = malloc(sizeof(event));
-       newEvent->eventType = FINISH_DISK2;
-       newEvent->Time = getTime(config.DISK2_MIN, config.DISK2_MAX)+popEvent->Time;
-       newEvent->ProcessID = popEvent->ProcessID;
-       disk2Occupied = true;
-       push(newEvent, currQueue);
-    }else if(disk2Occupied == false && disk2Queue.count > 0){
-        push(popEvent,&disk2Queue);
-        struct event popDiskEvent;
-        popDiskEvent = pop(&disk2Queue);
-        popDiskEvent.eventType = FINISH_DISK2;
-        popDiskEvent.Time = getTime(config.DISK2_MIN, config.DISK2_MAX)+popEvent->Time;
-        push(&popDiskEvent, &disk2Queue);
-        disk2Occupied = true;
-    }
-}
-void finishDisk1(struct event *popEvent, struct queue *currQueue){
-    disk1Occupied = false; 
     struct event *newEvent;
     newEvent = malloc(sizeof(event));
-    newEvent->Time = getTime(config.ARRIVE_MIN, config.ARRIVE_MAX)+popEvent->Time;;
-    newEvent->eventType = ARRIVAL;
+    newEvent->eventType = FINISH_DISK1;
+    newEvent->Time = getTime(config.DISK1_MIN, config.DISK1_MAX)+popEvent->Time;
+    int disk1Time = newEvent->Time - popEvent->Time;
+    disk1Total += disk1Time;
+    if(disk1Time > disk1max){
+        disk1max = disk1Time;
+    }
+    disk1count++;
     newEvent->ProcessID = popEvent->ProcessID;
+    disk1Occupied = true;
     push(newEvent, currQueue);
+}
+
+void arriveDisk2(struct event *popEvent, struct queue *currQueue){
+    struct event *newEvent;
+    newEvent = malloc(sizeof(event));
+    newEvent->eventType = FINISH_DISK2;
+    newEvent->Time = getTime(config.DISK2_MIN, config.DISK2_MAX)+popEvent->Time;
+    int disk2Time = newEvent->Time - popEvent->Time;
+    disk2Total += disk2Time;
+    if(disk2Time > disk2max){
+       disk2max = disk2Time;
+    }
+    disk2count++;
+    newEvent->ProcessID = popEvent->ProcessID;
+    disk2Occupied = true;
+    push(newEvent, currQueue);
+}
+
+void finishDisk1(struct event *popEvent, struct queue *currQueue){
+    disk1Occupied = false; 
     if(disk1Queue.count > 0){
         struct event *newEvent2;
         newEvent2 = malloc(sizeof(event));
-        newEvent2->Time = disk1Queue.head->Time;
+        newEvent2->Time = popEvent->Time;
+        // newEvent2->Time = getTime(config.DISK1_MIN, config.DISK1_MAX)+popEvent->Time;
         newEvent2->eventType = ARRIVE_DISK1;
         newEvent2->ProcessID = disk1Queue.head->ProcessID;
         push(newEvent2, currQueue);
+        pop(&disk1Queue);
     }
 }
+
 void finishDisk2(struct event *popEvent, struct queue *currQueue){
     disk2Occupied = false; 
-    struct event *newEvent;
-    newEvent = malloc(sizeof(event));
-    newEvent->Time = getTime(config.ARRIVE_MIN, config.ARRIVE_MAX)+popEvent->Time;
-    newEvent->eventType = ARRIVAL;
-    newEvent->ProcessID = popEvent->ProcessID;
-    push(newEvent, currQueue);
     if(disk2Queue.count > 0){
         struct event *newEvent2;
         newEvent2 = malloc(sizeof(event));
-        newEvent2->Time = disk2Queue.head->Time;
+        newEvent2->Time = popEvent->Time;
         newEvent2->eventType = ARRIVE_DISK2;
         newEvent2->ProcessID = disk2Queue.head->ProcessID;
         push(newEvent2, currQueue);
+        pop(&disk2Queue);
     }
 }
+
 void arriveNetwork(struct event *popEvent, struct queue *currQueue){
-    if(networkOccupied == false && networkQueue.count == 0 ){
-       struct event *newEvent;
-        newEvent = malloc(sizeof(event));
-       newEvent->eventType = FINISH_NETWORK;
-       newEvent->Time = getTime(config.NETWORK_MIN, config.NETWORK_MAX)+popEvent->Time;
-       newEvent->ProcessID = popEvent->ProcessID;
-        networkOccupied = true;
-       push(newEvent, currQueue);
-    }else if(networkOccupied == false && networkQueue.count > 0){
-        push(popEvent,&networkQueue);
-        struct event popNetworkEvent;
-        popNetworkEvent = pop(&networkQueue);
-        popNetworkEvent.eventType = FINISH_NETWORK;
-        popNetworkEvent.Time = getTime(config.NETWORK_MIN, config.NETWORK_MAX)+popEvent->Time;
-        push(&popNetworkEvent, &networkQueue);
-        networkOccupied = true;
-    }
-}
-void finishNetwork(struct event *popEvent, struct queue *currQueue){
-    networkOccupied = false;
     struct event *newEvent;
     newEvent = malloc(sizeof(event));
-    newEvent->eventType = ARRIVAL;
-    newEvent->Time = popEvent->Time;
+    newEvent->eventType = FINISH_NETWORK;
+    newEvent->Time = getTime(config.NETWORK_MIN, config.NETWORK_MAX)+popEvent->Time;
+    int networkTime = newEvent->Time - popEvent->Time;  
+    printf("network time \n %d", networkTime);
+    networkTotal += networkTime;
+    if(networkTime > networkMax){
+        networkMax = networkTime;
+    }
+    networkCount++;
     newEvent->ProcessID = popEvent->ProcessID;
     push(newEvent, currQueue);
+}
+
+void finishNetwork(struct event *popEvent, struct queue *currQueue){
+    networkOccupied = false;
     if(networkQueue.count > 0){
-        // printf("sick");
+        struct event *newEvent2;
+        newEvent2 = malloc(sizeof(event));
+        newEvent2->Time = popEvent->Time;
+        newEvent2->eventType = ARRIVE_NETWORK;
+        newEvent2->ProcessID = networkQueue.head->ProcessID;
+        networkOccupied = true;
+        push(newEvent2, currQueue);
+        printf("net queue size: %d",networkQueue.count);
+        // pop(&networkQueue);
     }
 }
+
 //parses config file and sets variables
 //DONE passed test
 void initConfigFile(){
@@ -587,7 +592,7 @@ void initConfigFile(){
     // printf("%s %d\n", variable, config.DISK2_MIN);
 
     fscanf(file, "%s %d", variable, &config.DISK2_MAX);
-    printf("%s %d\n", variable, config.DISK2_MAX);
+    // printf("%s %d\n", variable, config.DISK2_MAX);
 
     fscanf(file, "%s %d", variable, &config.NETWORK_MIN);
     // printf("%s %d\n", variable, config.NETWORK_MIN);
@@ -639,20 +644,28 @@ void push(struct event *newEvent, struct queue *que){
 }
 
 struct event pop(struct queue *que){
-    // if(que->count == 1){
-    //     printf("Pop: Program complete. Exiting...");
-    //     exit(0);
-    // }
-    struct event poppedEvent = *que->head;
-    struct event *newHead;
-    newHead = que->head->next;
-    poppedEvent.next = NULL;
-    poppedEvent.prev = NULL;
-    newHead->prev = NULL;
-    que->head->next = NULL;
-    que->head = newHead;
-    que->count--;
-    return poppedEvent;
+    if(que->count > 1){
+        // printf("Pop: Program complete. Exiting...");
+        // exit(0);
+        struct event poppedEvent = *que->head;
+        struct event *newHead;
+        newHead = que->head->next;
+        poppedEvent.next = NULL;
+        poppedEvent.prev = NULL;
+        newHead->prev = NULL;
+        que->head->next = NULL;
+        que->head = newHead;
+        que->count--;
+        return poppedEvent;
+    }else if(que->count == 1){
+        struct event poppedEvent = *que->head;
+        initQueue(que);
+        return poppedEvent;
+    }else{
+        printf("Cannot pop an event from an empty queue");
+        exit(0);
+    }
+    
 }
 
 //start of priority queue methods
@@ -661,25 +674,28 @@ void sortEventQueue(struct queue *que){
     //get first node
     //compare to second node
     //if second < first then swap
-    int swapped, i;
+    int ind;
+    int i;
+
     struct event *first = que->head;
-    struct event *second = NULL;
+    struct event *next = NULL;
 
     if(first == NULL){
         return;
     }
+
     do{
-        swapped = 0;
+        ind = 0; //indicator of swap
         first = que->head;
-        while(first->next != second){
+        while(first->next != next){
             if(first->Time > first->next->Time){
                 swap(first, first->next);
-                swapped = 1;
+                ind = 1;
             }
             first = first->next;
         }
-        second = first;
-    }while(swapped);
+        next = first;
+    }while(ind);
 }
 
 void swap(struct event *larger, struct event *smaller){
@@ -708,51 +724,3 @@ int getTime(int min, int max){
     int time = randomNumberGenerator(min, max);
     return time;
 }
-
-
-// Test code
-
-
-// int random = randomNumberGenerator(config.ARRIVE_MAX, config.ARRIVE_MIN); //test random number generator
-    // printf("Main: Random: %d\n", random);
-
-    // while(eventQueue.count < 0){
-    
-    
-    // }
-    //how can I make this not hardcoded?
-    // struct queue *eventQueue;
-    // struct event newEvent2;
-    // initEvent(&newEvent2, &eventQueue);
-    // push(&newEvent2, &eventQueue);
-    // struct event newEvent3;
-    // initEvent(&newEvent3, &eventQueue);
-    // push(&newEvent3, &eventQueue);
-    // int count = 0;
-    // while(count < 100){
-    //     struct event newEvent2;
-    //     initEvent(&newEvent2, &eventQueue);
-    //     push(&newEvent2, &eventQueue);
-    //     // printf("Main: Tail of queue: %d\n", eventQueue.tail->ProcessID);
-    //     // printf("Main: Head of queue: %d\n", eventQueue.head->Time);
-    //     // if(count % 10 == 0){
-    //     //     struct event poppedEvent = pop(&eventQueue); //this is making things act weird.
-    //     //     printf("Main: Popped Event: %d\n", poppedEvent.ProcessID);
-    //     //     printf("Main: Head(test): %d\n", eventQueue.head->ProcessID);
-    //     // }
-    //     count++;
-    // }
-
-
-
-     // sortEventQueue(&eventQueue);
-    // struct event *curr = eventQueue.head;
-    // while(curr->next != NULL){
-    //     printf("Sort check: Current time: %d | ID: %d\n", curr->Time, curr->ProcessID);
-    //     if(curr->next != NULL){
-    //         curr = curr->next;
-    //     }
-    //     count++;
-    // }
-    // printf("Main: Size of EventQueue memory: %lu\n", sizeof(event)*eventQueue.count);
-    // //I don't malloc any memory so do I have to free it?
